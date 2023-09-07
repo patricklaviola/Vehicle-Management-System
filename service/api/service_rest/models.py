@@ -50,19 +50,16 @@ class Appointment(models.Model):
 
     date_time = models.DateTimeField()
     reason = models.TextField()
-
     status = models.ForeignKey(
         Status,
         related_name="appointments",
         on_delete=models.PROTECT,
     )
-
     vin = models.CharField(max_length=17)
     customer = models.CharField(max_length=100)
-
     technician = models.ForeignKey(
         Technician,
-        related_name="Appointments",
+        related_name="appointments",
         on_delete=models.PROTECT
     )
 
