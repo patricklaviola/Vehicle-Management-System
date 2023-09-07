@@ -38,16 +38,19 @@ class Technician(models.Model):
 class Appointment(models.Model):
 
     @classmethod
-    def create(cls, **kwargs):  # Class method to create an appointment
-        # Set status to "CREATED"
+    def create(cls, **kwargs):
+        try:
+            auto = AutomobileVO.objects.get(vin=kwargs["vin"])
+            kwargs["is_vip"] = auto.sold
+        except AutomobileVO.DoesNotExist:
+            kwargs["is_vip"] = False
+            
         kwargs["status"] = Status.objects.get(name="CREATED")
-        # Initialize Appointment object with kwargs
         appointment = cls(**kwargs)
-        # Save to the database
         appointment.save()
-        # Return the saved object
         return appointment
 
+    is_vip = models.BooleanField(default=False)
     date_time = models.DateTimeField()
     reason = models.TextField()
     status = models.ForeignKey(

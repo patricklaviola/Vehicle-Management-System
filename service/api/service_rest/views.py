@@ -38,6 +38,7 @@ class AppointmentEncoder(ModelEncoder):
         "reason",
         "vin",
         "customer",
+        "is_vip",
     ]
 
     def get_extra_data(self, o):
@@ -45,8 +46,6 @@ class AppointmentEncoder(ModelEncoder):
             "status": o.status.name,
             "technician": str(o.technician),
         }
-
-    # is VIP?
 
 
 @require_http_methods(["GET", "POST"])
