@@ -33,7 +33,7 @@ function SaleForm () {
 
     useEffect(() => {
         // fetch automobiles data from API and set to state
-        fetch("api_automobile_details")
+        fetch("api_automobile")
             .then(response => response.json())
             .then(data => setAutomobile(data));
 
