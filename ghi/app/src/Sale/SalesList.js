@@ -1,3 +1,6 @@
+// Show a list of Sales in Sales!
+// Create link 'Sales' in navbar!
+
 function SalesList(props) {
     if (props.sales === undefined)
         return null;
