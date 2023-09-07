@@ -107,4 +107,3 @@ def api_list_appointments():
 
 @require_http_methods(["DELETE", "GET", "PUT"])
 def api_show_appointment():
-    print("this is a test")
