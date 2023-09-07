@@ -1,0 +1,1 @@
+// Create a new instance of Customer in Sales!
