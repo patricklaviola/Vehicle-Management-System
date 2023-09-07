@@ -18,7 +18,7 @@ def api_automobiles(request):
             {"autos": autos},
             encoder=AutomobileEncoder,
         )
-    else:
+    else:  # POST
         try:
             content = json.loads(request.body)
             model_id = content["model_id"]
@@ -30,15 +30,17 @@ def api_automobiles(request):
                 encoder=AutomobileEncoder,
                 safe=False,
             )
-        except:
+        except ValueError as e:
             response = JsonResponse(
-                {"message": "Could not create the automobile"}
+                {"message": "Unable to create the automobile: {}".format(
+                    str(e)
+                )}
             )
             response.status_code = 400
             return response
 
 
-@require_http_methods(["DELETE", "GET", "PUT"])
+@require_http_methods(["GET", "DELETE", "PUT"])
 def api_automobile(request, vin):
     if request.method == "GET":
         try:
@@ -49,7 +51,7 @@ def api_automobile(request, vin):
                 safe=False
             )
         except Automobile.DoesNotExist:
-            response = JsonResponse({"message": "Does not exist"})
+            response = JsonResponse({"message": "Automobile does not exist"})
             response.status_code = 404
             return response
     elif request.method == "DELETE":
@@ -62,8 +64,8 @@ def api_automobile(request, vin):
                 safe=False,
             )
         except Automobile.DoesNotExist:
-            return JsonResponse({"message": "Does not exist"})
-    else: # PUT
+            return JsonResponse({"message": "Automobile does not exist"})
+    else:  # PUT
         try:
             content = json.loads(request.body)
             auto = Automobile.objects.get(vin=vin)
@@ -92,7 +94,7 @@ def api_manufacturers(request):
             {"manufacturers": manufacturers},
             encoder=ManufacturerEncoder,
         )
-    else:
+    else:  # POST
         try:
             content = json.loads(request.body)
             manufacturer = Manufacturer.objects.create(**content)
@@ -101,15 +103,17 @@ def api_manufacturers(request):
                 encoder=ManufacturerEncoder,
                 safe=False,
             )
-        except:
+        except ValueError as e:
             response = JsonResponse(
-                {"message": "Could not create the manufacturer"}
+                {"message": "Unable to create the manufacturer: {}".format(
+                    str(e)
+                )}
             )
             response.status_code = 400
             return response
 
 
-@require_http_methods(["DELETE", "GET", "PUT"])
+@require_http_methods(["GET", "DELETE", "PUT"])
 def api_manufacturer(request, pk):
     if request.method == "GET":
         try:
@@ -134,7 +138,7 @@ def api_manufacturer(request, pk):
             )
         except Manufacturer.DoesNotExist:
             return JsonResponse({"message": "Does not exist"})
-    else: # PUT
+    else:  # PUT
         try:
             content = json.loads(request.body)
             manufacturer = Manufacturer.objects.get(id=pk)
@@ -175,15 +179,17 @@ def api_vehicle_models(request):
                 encoder=VehicleModelEncoder,
                 safe=False,
             )
-        except:
+        except ValueError as e:
             response = JsonResponse(
-                {"message": "Could not create the vehicle model"}
+                {"message": "Unable to create the vehicle model: {}".format(
+                    str(e)
+                )}
             )
             response.status_code = 400
             return response
 
 
-@require_http_methods(["DELETE", "GET", "PUT"])
+@require_http_methods(["GET", "DELETE", "PUT"])
 def api_vehicle_model(request, pk):
     if request.method == "GET":
         try:
@@ -208,7 +214,7 @@ def api_vehicle_model(request, pk):
             )
         except VehicleModel.DoesNotExist:
             return JsonResponse({"message": "Does not exist"})
-    else: # PUT
+    else:  # PUT
         try:
             content = json.loads(request.body)
             model = VehicleModel.objects.get(id=pk)
