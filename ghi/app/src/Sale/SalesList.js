@@ -1,8 +1,11 @@
 // Show a list of Sales in Sales!
 // Create link 'Sales' in navbar!
 
+// Define functional React Component 'SalesList' that takes a props object as an argument.
 function SalesList(props) {
+    // Check if sales prop is undefined:
     if (props.sales === undefined)
+        // If yes, return null
         return null;
 
     return (
