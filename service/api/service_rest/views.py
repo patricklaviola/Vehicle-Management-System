@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 import json
 from django.http import JsonResponse
 
 from common.json import ModelEncoder
-from .models import AutomobileVO, Status, Technician, Appointment
+from .models import AutomobileVO, Technician, Appointment
 
 
 class AutomobileVODetailEncoder(ModelEncoder):
@@ -30,32 +30,23 @@ class TechnicianDetailEncoder(ModelEncoder):
     ]
 
 
-class AppointmentListEncoder(ModelEncoder):
+class AppointmentEncoder(ModelEncoder):
     model = Appointment
     properties = [
+        "id",
         "date_time",
         "reason",
         "vin",
         "customer",
-        "technician",
+        "is_vip",
     ]
 
     def get_extra_data(self, o):
-        return {"status": o.status.name}
+        return {
+            "status": o.status.name,
+            "technician": str(o.technician),
+        }
 
-
-class AppointmentDetailEncoder(ModelEncoder):
-    model = Appointment
-    properties = [
-        "date_time",
-        "reason",
-        "vin",
-        "customer",
-        "technician",
-    ]
-
-    def get_extra_data(self, o):
-        return {"status": o.status.name}
 
 @require_http_methods(["GET", "POST"])
 def api_list_technicians(request):
@@ -65,7 +56,6 @@ def api_list_technicians(request):
             {"technicians": technicians},
             encoder=TechnicianListEncoder,
         )
-    # handle POST
     else:
         content = json.loads(request.body)
 
@@ -101,10 +91,52 @@ def api_show_technician(request, pk):
 
 
 @require_http_methods(["GET", "POST"])
-def api_list_appointments():
-    pass
+def api_list_appointments(request):
+    if request.method == "GET":
+        appointments = Appointment.objects.all()
+        return JsonResponse(
+            {"appointments": appointments},
+            encoder=AppointmentEncoder,
+        )
+    else:
+        content = json.loads(request.body)
+
+        technician_id = content.get("technician")
+        technician_instance = get_object_or_404(Technician, id=technician_id)
+        content['technician'] = technician_instance
+
+        appointment = Appointment.create(**content)
+
+        return JsonResponse(
+            appointment,
+            encoder=AppointmentEncoder,
+            safe=False,
+        )
 
 
-@require_http_methods(["DELETE", "GET", "PUT"])
-def api_show_appointment():
-    print("this is a test")
+@require_http_methods(["DELETE"])
+def api_delete_appointment(request, pk):
+    count, _ = Appointment.objects.filter(id=pk).delete()
+    return JsonResponse({"deleted": count > 0})
+
+
+@require_http_methods(["PUT"])
+def api_finish_appointment(request, pk):
+    appointment = Appointment.objects.get(id=pk)
+    appointment.finish()
+    return JsonResponse(
+        appointment,
+        encoder=AppointmentEncoder,
+        safe=False,
+    )
+
+
+@require_http_methods(["PUT"])
+def api_cancel_appointment(request, pk):
+    appointment = Appointment.objects.get(id=pk)
+    appointment.cancel()
+    return JsonResponse(
+        appointment,
+        encoder=AppointmentEncoder,
+        safe=False,
+    )
