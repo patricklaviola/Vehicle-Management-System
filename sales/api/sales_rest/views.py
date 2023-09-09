@@ -313,7 +313,7 @@ def api_list_sales(request):
         # Try to get the AutomobileVO with the specified ID from the database,
         # and add it to the Sale object being created
         try:
-            automobile_id = content['automobile_id']
+            automobile_id = content['automobile']
             automobile = AutomobileVO.objects.get(id=automobile_id)
             content['automobile'] = automobile
         # If there's an error parsing the request body or...
@@ -329,7 +329,7 @@ def api_list_sales(request):
         # Try to get the Salesperson with the specified ID from the database,
         # and add it to the Sale object being created
         try:
-            salesperson_id = content['salesperson_id']
+            salesperson_id = content['salesperson']
             salesperson = Salesperson.objects.get(id=salesperson_id)
             content['salesperson'] = salesperson
         # If there's an error parsing the request body or...
@@ -345,7 +345,7 @@ def api_list_sales(request):
         # Try to get the Customer with the specified ID from the database,
         # and add it to the Sale object being created
         try:
-            customer_id = content['customer_id']
+            customer_id = content['customer']
             customer = Customer.objects.get(id=customer_id)
             content['customer'] = customer
         # If there's an error parsing the request body or...
