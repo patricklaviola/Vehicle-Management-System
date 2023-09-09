@@ -1,22 +1,16 @@
 from django.db import models
-from django.urls import reverse
 
 
 class Salesperson(models.Model):
-    id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    employee_id = models.CharField(max_length=15, unique=True)
+    employee_id = models.PositiveIntegerField(unique=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def get_api_url(self):
-        return reverse("api_salesperson", kwargs={"pk": self.id})
-
 
 class Customer(models.Model):
-    id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     address = models.CharField(max_length=150, null=True)
@@ -25,12 +19,8 @@ class Customer(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def get_api_url(self):
-        return reverse("api_customer", kwargs={"pk": self.id})
-
 
 class AutomobileVO(models.Model):
-    id = models.AutoField(primary_key=True)
     vin = models.CharField(max_length=150)
     sold = models.BooleanField(default=False)
 
@@ -44,23 +34,23 @@ class AutomobileVO(models.Model):
 
 
 class Sale(models.Model):
-    id = models.AutoField(primary_key=True)
     automobile = models.ForeignKey(
         AutomobileVO,
         related_name="sales",
         on_delete=models.CASCADE,
+        null=True
     )
     salesperson = models.ForeignKey(
         Salesperson,
         related_name="salesperson",
         on_delete=models.CASCADE,
+        null=True
     )
     customer = models.ForeignKey(
         Customer,
         related_name="customer",
         on_delete=models.CASCADE,
+        null=True
     )
     price = models.PositiveIntegerField(null=True)
 
-    def get_api_url(self):
-        return reverse("api_sale", kwargs={"pk": self.id})

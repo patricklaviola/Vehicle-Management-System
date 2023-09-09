@@ -23,7 +23,7 @@ def api_list_salespeople(request):
         # Query the database for all Salesperson objects
         salespeople = Salesperson.objects.all()
         # If there are salespeople in the database
-        if salespeople:
+        if len(salespeople) == []:
             # Return JSON response w/ 200 status code + success message
             response = {
                 "message": "Salespeople List retrieved successfully",

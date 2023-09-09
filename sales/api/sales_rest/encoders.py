@@ -1,6 +1,4 @@
 from common.json import ModelEncoder
-
-
 from .models import (
     Salesperson,
     Customer,
@@ -11,7 +9,7 @@ from .models import (
 
 class SalespersonEncoder(ModelEncoder):
     model = Salesperson
-    fields = [
+    properties = [
         "id",
         "first_name",
         "last_name",
@@ -21,32 +19,32 @@ class SalespersonEncoder(ModelEncoder):
 
 class CustomerEncoder(ModelEncoder):
     model = Customer
-    fields = [
+    properties = [
         "id",
         "first_name",
         "last_name",
         "address",
-        "phone_number",
+        "phone_number"
     ]
 
 
 class AutomobileVOEncoder(ModelEncoder):
     model = AutomobileVO
-    fields = [
+    properties = [
         "id",
         "vin",
-        "sold",
+        "sold"
     ]
 
 
 class SaleEncoder(ModelEncoder):
     model = Sale
-    fields = [
+    properties = [
         "id",
         "automobile",
         "salesperson",
         "customer",
-        "price",
+        "price"
     ]
 
     def to_representation(self, o):
@@ -60,12 +58,19 @@ class SaleEncoder(ModelEncoder):
         except ValueError:
             return {"error": "Invalid price"}
 
-    def get_extra_data(self, o):
-        # id is automatically included as primary key field
-        return {"salesperson_id": o.salesperson.id}
-
     encoders = {
         "automobile": AutomobileVOEncoder(),
         "salesperson": SalespersonEncoder(),
         "customer": CustomerEncoder(),
     }
+
+    # def get_extra_data_salesperson(self, o):
+    #     return {"salesperson": {
+    #         "salesperson_id": o.salesperson.id,
+    #         "first_name": o.salesperson.first_name,
+    #         "last_name": o.salesperson.last_name,
+    #         "employee_id": o.salesperson.employee_id
+    #     }}
+
+    # def get_extra_data_customer(self, o):
+    #     return {"customer": o.customer.id}
