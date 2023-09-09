@@ -1,13 +1,17 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Salesperson(models.Model):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    employee_id = models.PositiveIntegerField(unique=True)
+    employee_id = models.CharField(max_length=15, unique=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def get_api_url(self):
+        return reverse("api_salesperson", kwargs={"pk": self.id})
 
 
 class Customer(models.Model):
@@ -18,6 +22,9 @@ class Customer(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def get_api_url(self):
+        return reverse("api_customer", kwargs={"pk": self.id})
 
 
 class AutomobileVO(models.Model):
@@ -54,3 +61,8 @@ class Sale(models.Model):
     )
     price = models.PositiveIntegerField(null=True)
 
+    def __str__(self):
+        return f"{self.id}"
+
+    def get_api_url(self):
+        return reverse("api_sale", kwargs={"pk": self.id})
