@@ -79,7 +79,7 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
             // Fetch updated data from API endpoints 
             fetchSales();
             fetchAutomobiles();
-            fetchData();
+            fetchSalesDataForAllCategories();
             // Reset input fields to their inital state
             setAutomobile('');
             setSalesperson('');
@@ -88,8 +88,8 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
         };
     };
 
-    // Define fetchData function and call it when the component mounts: 
-    const fetchData = async () => {
+    // Define fetchSaleData function and call it when the component mounts: 
+    const fetchSalesDataForAllCategories = async () => {
         // Send GET request to the automobiles API endpoint
         const automobileUrl = "http://localhost:8090/api/automobiles/";
         const automobileResponse = await fetch(automobileUrl);
@@ -118,7 +118,7 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
 
     // Call fetchData function when component mounts to update state variables with inital data using useEffect hook:
     useEffect(() => {
-        fetchData();
+        fetchSalesDataForAllCategories();
     }, []);
 
     // Return JSX element that renders form with the input fields for automobile VIN, salesperson, customer, and price, and submit button.
@@ -182,7 +182,6 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
                     </div>
                 </div>
             </div>
-        
         </>
     )
 };
