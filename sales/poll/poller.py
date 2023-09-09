@@ -14,7 +14,7 @@ sys.path.append("")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sales_project.settings")
 django.setup()
 
-from sales_rest.models import AutomobileVO
+from sales.api.sales_rest.models import AutomobileVO
 
 
 def poll(interval=60, repeat=True):

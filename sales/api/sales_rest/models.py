@@ -28,11 +28,11 @@ class Customer(models.Model):
 
 
 class AutomobileVO(models.Model):
-    vin = models.CharField(max_length=150)
+    vin = models.CharField(max_length=17, unique=True)
     sold = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.vin}"
+        return self.vin
 
     # Report a sale: this marks the vehicle as sold and saves the model
     def sell(self):
@@ -45,21 +45,18 @@ class Sale(models.Model):
         AutomobileVO,
         related_name="sales",
         on_delete=models.CASCADE,
-        null=True
     )
     salesperson = models.ForeignKey(
         Salesperson,
         related_name="salesperson",
         on_delete=models.CASCADE,
-        null=True
     )
     customer = models.ForeignKey(
         Customer,
         related_name="customer",
         on_delete=models.CASCADE,
-        null=True
     )
-    price = models.PositiveIntegerField(null=True)
+    price = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.id}"

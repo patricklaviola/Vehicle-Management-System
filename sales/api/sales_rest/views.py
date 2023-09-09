@@ -13,6 +13,7 @@ from .encoders import (
     AutomobileVOEncoder,
     SaleEncoder,
 )
+import requests
 
 
 # Define api_list_salespeople to handle requests for Salesperson data
@@ -310,11 +311,26 @@ def api_list_sales(request):
         # Try to parse the request body as JSON
         content = json.loads(request.body)
         # AUTOMOBILE
-        # Try to get the AutomobileVO with the specified ID from the database,
+        # Try to get the AutomobileVO with the specified vin from
+        # the inventory database,
         # and add it to the Sale object being created
         try:
-            automobile_id = content['automobile']
-            automobile = AutomobileVO.objects.get(id=automobile_id)
+            content["automobile"] = AutomobileVO.objects.get(
+                vin=content["automobile"])
+            # making a request to inventory API endpoint with that vin
+            response = requests.get(
+                'http://localhost:8100/api/automobiles/:vin/'
+            )
+            # parsing the response as json and assigning it auto to
+            # match the Inventory API response
+            auto = response.json()
+            # creating an AutomobileVO
+            automobile = AutomobileVO()
+            # setting its vin from the vin key in the Inventory API response
+            automobile.vin = auto['vin']
+            # saving the AutomobileVO to the database 
+            automobile.save()
+            # assigning the AutomobileVO to the Sale
             content['automobile'] = automobile
         # If there's an error parsing the request body or...
         # creating the Sale object
@@ -322,6 +338,13 @@ def api_list_sales(request):
             # Return JSON object w/ 400 status code + error message
             response = JsonResponse(
                 {"message": "Invalid Automobile ID: {}".format(str(e))}
+            )
+            response.status_code = 400
+            return response
+        # If Automobile has already been sold...
+        if content["automobile"].sold:
+            response = JsonResponse(
+                {"message": "Automobile has already been sold"}
             )
             response.status_code = 400
             return response
@@ -377,6 +400,7 @@ def api_list_sales(request):
         # Create the Sale object and save it to the database
         sale = Sale.objects.create(**content)
         sale.save()
+        sale.automobile.sell()
 
         # Convert price back to dollars for JSON response
         sale.price = sale.price / 100
@@ -390,7 +414,6 @@ def api_list_sales(request):
         }
         # The AutomobileVO.sell() method defined in models.py file
         # This marks the automobile as sold and saves it
-        sale.automobile.sell()
         return JsonResponse(
             response,
             encoder=SaleEncoder,
