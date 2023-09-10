@@ -67,7 +67,6 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
         };
     };
 
-
     // Call fetchData function when component mounts to update state variables with inital data using useEffect hook:
     useEffect(() => {
         fetchSalesDataForAllCategories();
