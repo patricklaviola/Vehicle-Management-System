@@ -5,6 +5,7 @@ from .models import (
     AutomobileVO,
     Sale,
 )
+from decimal import Decimal
 
 
 class SalespersonEncoder(ModelEncoder):
@@ -37,6 +38,12 @@ class AutomobileVOEncoder(ModelEncoder):
     ]
 
 
+def decimal_to_str(o):
+    if isinstance(o, Decimal):
+        return str(o)
+    raise TypeError()
+
+
 class SaleEncoder(ModelEncoder):
     model = Sale
     properties = [
@@ -46,31 +53,15 @@ class SaleEncoder(ModelEncoder):
         "customer",
         "price"
     ]
-
-    def to_representation(self, o):
-        data = super().to_representation(o)
-        data["price"] = o.price / 100
-        return data
-
+    
     def default(self, o):
         try:
             return super().default(o)
-        except ValueError:
-            return {"error": "Invalid price"}
+        except TypeError:
+            return decimal_to_str(o)
 
     encoders = {
         "automobile": AutomobileVOEncoder(),
         "salesperson": SalespersonEncoder(),
         "customer": CustomerEncoder(),
     }
-
-    # def get_extra_data_salesperson(self, o):
-    #     return {"salesperson": {
-    #         "salesperson_id": o.salesperson.id,
-    #         "first_name": o.salesperson.first_name,
-    #         "last_name": o.salesperson.last_name,
-    #         "employee_id": o.salesperson.employee_id
-    #     }}
-
-    # def get_extra_data_customer(self, o):
-    #     return {"customer": o.customer.id}

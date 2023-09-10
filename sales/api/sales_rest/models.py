@@ -56,10 +56,10 @@ class Sale(models.Model):
         related_name="customer",
         on_delete=models.CASCADE,
     )
-    price = models.PositiveIntegerField(default=0)
+    price = models.DecimalField(max_digits=20, decimal_places=2, null=False)
 
     def __str__(self):
-        return f"{self.id}"
+        return f"{self.automobile} sold to {self.customer} by {self.salesperson}"
 
     def get_api_url(self):
         return reverse("api_sale", kwargs={"pk": self.id})

@@ -365,34 +365,12 @@ def api_list_sales(request):
             )
             response.status_code = 400
             return response
-        # PRICE
-        # Try to get the price from the request body
-        try:
-            price = content['price']
-        # If the price is not provided in the request body
-        except KeyError:
-            # Return JSON response with 400 status code + error message
-            response = JsonResponse(
-                {"message": "Price is required!"}
-            )
-            response.status_code = 400
-            return response
-
-        # Convert the price to cents before saving
-        price = int(price * 100)
-        content['price'] = price
 
         # Create the Sale object and save it to the database
         sale = Sale.objects.create(**content)
         sale.save()
         sale.automobile.sell()
 
-        # Convert price back to dollars for JSON response
-        sale.price = sale.price / 100
-        content['price'] = price
-        # Create a success message with the newly created Sales object,
-        # and mark the corresponding AutomobileVO object as sold
-        # using it's sell() method
         response = {
             "message": "Sale created successfully",
             "sale": sale,
