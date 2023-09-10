@@ -3,7 +3,6 @@ from django.urls import reverse
 
 
 class Salesperson(models.Model):
-    id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     employee_id = models.CharField(max_length=15, unique=True)
@@ -16,7 +15,6 @@ class Salesperson(models.Model):
 
 
 class Customer(models.Model):
-    id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     address = models.CharField(max_length=150, null=True)
@@ -30,12 +28,11 @@ class Customer(models.Model):
 
 
 class AutomobileVO(models.Model):
-    id = models.AutoField(primary_key=True)
-    vin = models.CharField(max_length=150)
+    vin = models.CharField(max_length=17, unique=True)
     sold = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.vin}"
+        return self.vin
 
     # Report a sale: this marks the vehicle as sold and saves the model
     def sell(self):
@@ -44,7 +41,6 @@ class AutomobileVO(models.Model):
 
 
 class Sale(models.Model):
-    id = models.AutoField(primary_key=True)
     automobile = models.ForeignKey(
         AutomobileVO,
         related_name="sales",
@@ -60,7 +56,10 @@ class Sale(models.Model):
         related_name="customer",
         on_delete=models.CASCADE,
     )
-    price = models.PositiveIntegerField(null=True)
+    price = models.DecimalField(max_digits=20, decimal_places=2, null=False)
+
+    def __str__(self):
+        return f"{self.automobile} sold to {self.customer} by {self.salesperson}"
 
     def get_api_url(self):
         return reverse("api_sale", kwargs={"pk": self.id})

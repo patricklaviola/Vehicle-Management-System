@@ -1,17 +1,16 @@
 from common.json import ModelEncoder
-
-
 from .models import (
     Salesperson,
     Customer,
     AutomobileVO,
     Sale,
 )
+from decimal import Decimal
 
 
 class SalespersonEncoder(ModelEncoder):
     model = Salesperson
-    fields = [
+    properties = [
         "id",
         "first_name",
         "last_name",
@@ -21,48 +20,45 @@ class SalespersonEncoder(ModelEncoder):
 
 class CustomerEncoder(ModelEncoder):
     model = Customer
-    fields = [
+    properties = [
         "id",
         "first_name",
         "last_name",
         "address",
-        "phone_number",
+        "phone_number"
     ]
 
 
 class AutomobileVOEncoder(ModelEncoder):
     model = AutomobileVO
-    fields = [
+    properties = [
         "id",
         "vin",
-        "sold",
+        "sold"
     ]
+
+
+def decimal_to_str(o):
+    if isinstance(o, Decimal):
+        return str(o)
+    raise TypeError()
 
 
 class SaleEncoder(ModelEncoder):
     model = Sale
-    fields = [
+    properties = [
         "id",
         "automobile",
         "salesperson",
         "customer",
-        "price",
+        "price"
     ]
-
-    def to_representation(self, o):
-        data = super().to_representation(o)
-        data["price"] = o.price / 100
-        return data
-
+    
     def default(self, o):
         try:
             return super().default(o)
-        except ValueError:
-            return {"error": "Invalid price"}
-
-    def get_extra_data(self, o):
-        # id is automatically included as primary key field
-        return {"salesperson_id": o.salesperson.id}
+        except TypeError:
+            return decimal_to_str(o)
 
     encoders = {
         "automobile": AutomobileVOEncoder(),

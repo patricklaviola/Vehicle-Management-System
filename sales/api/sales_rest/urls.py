@@ -47,7 +47,7 @@ urlpatterns = [
         name="api_sale_details",
     ),
     path(
-        "api_available_cars/",
+        "cars/",
         api_available_cars,
         name="api_available_cars",
     ),

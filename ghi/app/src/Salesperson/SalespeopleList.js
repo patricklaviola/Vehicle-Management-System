@@ -1,10 +1,21 @@
-// Show a list of Salespeople in Sales!
-// Create 'Salespeople' link in navbar!
+import { useEffect, useState } from 'react';
 
-function SalespeopleList(props) {
-    if (props.salespeople === undefined) {
-        return null;
+
+function SalespeopleList() {
+    const [salespeople, setSalespeople] = useState([])
+
+    const fetchSalespeopleData = async () => {
+        const response = await fetch("http://localhost:8090/api/salespeople/");
+        if (response.ok) {
+            const data = await response.json();
+            setSalespeople(data.salespeople);
+        }
     }
+
+    useEffect(() => {
+        fetchSalespeopleData();
+    }, []);
+    
     return (
         <>
             <h1 className="list-heading" id="salespeople-heading">Salespeople</h1>
@@ -18,7 +29,7 @@ function SalespeopleList(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {props.salespeople.map(salesperson => {
+                        {salespeople.map(salesperson => {
                             return (
                                 <tr key={salesperson.id}>
                                     <td>{salesperson.employee_id}</td>

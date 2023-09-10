@@ -1,7 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
-
 from .encoders import (
     AutomobileEncoder,
     ManufacturerEncoder,
@@ -21,7 +20,7 @@ def api_automobiles(request):
     else:  # POST
         try:
             content = json.loads(request.body)
-            model_id = content["model_id"]
+            model_id = content["model"]
             model = VehicleModel.objects.get(pk=model_id)
             content["model"] = model
             auto = Automobile.objects.create(**content)
@@ -170,7 +169,7 @@ def api_vehicle_models(request):
     else:
         try:
             content = json.loads(request.body)
-            manufacturer_id = content["manufacturer_id"]
+            manufacturer_id = content["manufacturer"]
             manufacturer = Manufacturer.objects.get(id=manufacturer_id)
             content["manufacturer"] = manufacturer
             model = VehicleModel.objects.create(**content)
