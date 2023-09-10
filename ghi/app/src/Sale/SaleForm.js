@@ -53,7 +53,7 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
 
         // fetchSales, pass as prop to the SaleForm component
         // Define URL and fetch configuration for new sale data
-        const saleUrl = "http://localhost:8090/api/sales";
+        const saleUrl = "http://localhost:8090/api/sales/";
         const saleFetchConfig = {
             method: "POST",
             body: JSON.stringify(newSaleData),

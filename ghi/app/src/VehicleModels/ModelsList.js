@@ -1,7 +1,20 @@
-// Show a list of VehicleModels in Inventory!
-// Create 'Models' link in navbar!
+import { useEffect, useState } from 'react';
 
-function ModelsList({ models }) {
+function ModelsList() {
+    const [models, setModels] = useState([])
+
+    const fetchModelsData = async () => {
+        const response = await fetch("http://localhost:8100/api/models/");
+        if (response.ok) {
+            const data = await response.json();
+            setModels(data.models);
+        }
+    }
+
+    useEffect(() => {
+        fetchModelsData();
+    }, []);
+    
     return (
         <>
             <h1 className="list-heading" id="models-heading">Models</h1>

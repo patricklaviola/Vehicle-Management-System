@@ -1,7 +1,20 @@
-// Show a list of Automobiles in Inventory!
-// Create 'Automobiles' link in navbar!
+import { useEffect, useState } from 'react';
 
-function AutomobilesList({ automobiles}) {
+function AutomobilesList() {
+    const [autos, setAutos] = useState([])
+
+    const fetchAutosData = async () => {
+        const response = await fetch("http://localhost:8100/api/automobiles/");
+        if (response.ok) {
+            const data = await response.json();
+            setAutos(data.autos);
+        }
+    }
+
+    useEffect(() => {
+        fetchAutosData();
+    }, []);
+
     return (
         <>
             <h1 className="list-heading" id="automobiles-heading">Automobiles</h1>
@@ -18,7 +31,7 @@ function AutomobilesList({ automobiles}) {
                         </tr>
                     </thead>
                     <tbody>
-                        {automobiles.map(auto => {
+                        {autos.map(auto => {
                             return (
                                 <tr key={auto.vin}>
                                     <td>{auto.vin}</td>

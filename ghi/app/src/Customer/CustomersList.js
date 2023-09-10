@@ -1,11 +1,21 @@
-// Show a list of Customers in Sales!
-// Create 'Customers' link in navbar!
+import { useEffect, useState } from 'react';
 
 
-function CustomersList(props) {
-    if (props.customers === undefined) {
-        return null;
+function CustomersList() {
+    const [customers, setCustomers] = useState([])
+
+    const fetchCustomersData = async () => {
+        const response = await fetch("http://localhost:8090/api/customers/");
+        if (response.ok) {
+            const data = await response.json();
+            setCustomers(data.customers);
+        }
     }
+
+    useEffect(() => {
+        fetchCustomersData();
+    }, []);
+
     return (
         <>
             <h1 className="list-heading" id="customers-heading">Customers</h1>
@@ -20,7 +30,7 @@ function CustomersList(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {props.customers.map(customer => {
+                        {customers.map(customer => {
                             return (
                                 <tr key={customer.id}>
                                     <td>{customer.first_name}</td>

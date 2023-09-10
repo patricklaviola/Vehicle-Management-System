@@ -1,12 +1,21 @@
-// Show a list of Sales in Sales!
-// Create link 'Sales' in navbar!
+import { useEffect, useState } from 'react';
+
 
 // Define functional React Component 'SalesList' that takes a props object as an argument.
-function SalesList(props) {
-    // Check if sales prop is undefined:
-    if (props.sales === undefined)
-        // If yes, return null
-        return null;
+function SalesList() {
+    const [sales, setSales] = useState([])
+
+    const fetchSalesData = async () => {
+        const response = await fetch("http://localhost:8090/api/sales/");
+        if (response.ok) {
+            const data = await response.json();
+            setSales(data.sales);
+        }
+    }
+
+    useEffect(() => {
+        fetchSalesData();
+    }, []);
 
     return (
         <>
@@ -23,7 +32,7 @@ function SalesList(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {props.sales.map(sale => {
+                        {sales.map(sale => {
                             return (
                                 <tr key={sale.id}>
                                     <td>{sale.salesperson.employee_id}</td>
@@ -32,7 +41,7 @@ function SalesList(props) {
                                     <td>{sale.automobile.vin}</td>
                                     <td>{sale.price}</td>
                                 </tr>
-                            )
+                            );
                         })}
                     </tbody>
                 </table>
