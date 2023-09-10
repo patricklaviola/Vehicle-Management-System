@@ -13,7 +13,7 @@ from .encoders import (
     AutomobileVOEncoder,
     SaleEncoder,
 )
-import requests
+# import requests
 
 
 # Define api_list_salespeople to handle requests for Salesperson data
@@ -317,21 +317,6 @@ def api_list_sales(request):
         try:
             content["automobile"] = AutomobileVO.objects.get(
                 vin=content["automobile"])
-            # making a request to inventory API endpoint with that vin
-            response = requests.get(
-                'http://localhost:8100/api/automobiles/:vin/'
-            )
-            # parsing the response as json and assigning it auto to
-            # match the Inventory API response
-            auto = response.json()
-            # creating an AutomobileVO
-            automobile = AutomobileVO()
-            # setting its vin from the vin key in the Inventory API response
-            automobile.vin = auto['vin']
-            # saving the AutomobileVO to the database 
-            automobile.save()
-            # assigning the AutomobileVO to the Sale
-            content['automobile'] = automobile
         # If there's an error parsing the request body or...
         # creating the Sale object
         except ValueError as e:

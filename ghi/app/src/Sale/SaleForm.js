@@ -10,13 +10,13 @@ SPECIAL FEATURE 1: Unsold Only
 import React, { useEffect, useState } from 'react';
 
 
-function SaleForm ({fetchSales, fetchAutomobiles}) {
+function SaleForm () {
     // Define state variables using useState hook to manage the following:
     const [automobiles, setAutomobiles] = useState([]);
-    const [salespeople, setSalespeople] = useState([]);
-    const [customers, setCustomers] = useState([]);
     const [automobile, setAutomobile] = useState('');
+    const [salespeople, setSalespeople] = useState([]);
     const [salesperson, setSalesperson] = useState('');
+    const [customers, setCustomers] = useState([]);
     const [customer, setCustomer] = useState('');
     const [price, setPrice] = useState('');
 
@@ -37,6 +37,84 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
     const handlePriceChange = (e) => {
         setPrice(e.target.value);
     };
+
+
+    const fetchAutomobiles = async () => {
+        // Send GET request to the automobile API endpoint
+        const url = "http://localhost:8090/api/automobile/";
+        const response = await fetch(url);
+        if (response.ok) {
+            // If the request is successful, update state variable with response data 
+            const data = await response.json();
+            setAutomobiles(data.automobiles);
+        };
+    };
+
+    const fetchAutomobile = async () => {
+        // Send GET request to the automobile API endpoint
+        const url = "http://localhost:8090/api/automobile/:vin/";
+        const response = await fetch(url);
+        if (response.ok) {
+            // If the request is successful, update state variable with response data 
+            const data = await response.json();
+            setAutomobile(data.automobile);
+        };
+    };
+
+    const fetchSalespeople = async () => {
+        // Send GET request to the salespeople API endpoint
+        const url = "http://localhost:8090/api/salespeople/";
+        const response = await fetch(url);
+        if (response.ok) {
+            // if the the request is successful, update state variable with response data 
+            const data = await response.json();
+            setSalespeople(data.salespeople);
+        };
+    };
+
+    const fetchSalesperson = async () => {
+        // Send GET request to the salespeople API endpoint
+        const url = "http://localhost:8090/api/salespeople/:id/";
+        const response = await fetch(url);
+        if (response.ok) {
+            // if the the request is successful, update state variable with response data 
+            const data = await response.json();
+            setSalesperson(data.salesperson);
+        };
+    };
+    
+    const fetchCustomers = async () => {
+        // Send GET response to the customer API endpoint 
+        const url = "http://localhost:8090/api/customers/";
+        const response = await fetch(url);
+        if (response.ok) {
+            // if the the request is successful, update state variable with response data 
+            const data = await response.json();
+            setCustomers(data.customers);
+        };
+    };
+
+    const fetchCustomer = async () => {
+        // Send GET response to the customer API endpoint 
+        const url = "http://localhost:8090/api/customers/:id/";
+        const response = await fetch(url);
+        if (response.ok) {
+            // if the the request is successful, update state variable with response data 
+            const data = await response.json();
+            setCustomer(data.customer);
+        };
+    };
+    
+    // Call the fetch functions when component mounts to update state variables with inital data using useEffect hook:
+    useEffect(() => {
+        fetchAutomobiles();
+        fetchAutomobile();
+        fetchSalespeople();
+        fetchSalesperson();
+        fetchCustomers();
+        fetchCustomer();
+    }, []);
+
 
     // Define handleSubmit function to handle form submission
     const handleSubmit = async (e) => {
@@ -62,11 +140,11 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
         // Send POST request to the sales API endpoint with newSaleData as the body
         const saleResponse = await fetch(saleUrl, saleFetchConfig);
 
-        // Fefine URL and fetch configuration for automobile data
+        // Define URL and fetch configuration for automobile data
         const automobileUrl = `http://localhost:8100${automobile}`;
         const automobileFetchConfig = {
             method: "PUT",
-            body: JSON.stringify({sold: true}),
+            body: JSON.stringify({"sold": true}),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -77,9 +155,12 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
        // If both requests are successful, update state variables using fetch functions and reset input fields 
         if (saleResponse.ok && automobileResponse.ok) {
             // Fetch updated data from API endpoints 
-            fetchSales();
             fetchAutomobiles();
-            fetchSalesDataForAllCategories();
+            fetchAutomobile();
+            fetchSalespeople();
+            fetchSalesperson();
+            fetchCustomers();
+            fetchCustomer();
             // Reset input fields to their inital state
             setAutomobile('');
             setSalesperson('');
@@ -88,38 +169,6 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
         };
     };
 
-    // Define fetchSaleData function and call it when the component mounts: 
-    const fetchSalesDataForAllCategories = async () => {
-        // Send GET request to the automobiles API endpoint
-        const automobileUrl = "http://localhost:8090/api/automobiles/";
-        const automobileResponse = await fetch(automobileUrl);
-        if (automobileResponse.ok) {
-            // If the request is successful, update state variable with response data 
-            const automobileJson = await automobileResponse.json();
-            setAutomobiles(automobileJson);
-        };
-        // Send GET request to the salespeople API endpoint
-        const salespersonUrl = "http://localhost:8090/api/salespeople/";
-        const salespersonResponse = await fetch(salespersonUrl);
-        if (salespersonResponse.ok) {
-            // if the the request is successful, update state variable with response data 
-            const salespersonJson = await salespersonResponse.json();
-            setSalespeople(salespersonJson);
-        };
-        // Send GET response to the customer API endpoint 
-        const customerUrl = "http://localhost:8090/api/customers/";
-        const customerResponse = await fetch(customerUrl);
-        if (customerResponse.ok) {
-            // if the the request is successful, update state variable with response data 
-            const customerJson = await customerResponse.json();
-            setCustomers(customerJson);
-        };
-    };
-
-    // Call fetchData function when component mounts to update state variables with inital data using useEffect hook:
-    useEffect(() => {
-        fetchSalesDataForAllCategories();
-    }, []);
 
     // Return JSX element that renders form with the input fields for automobile VIN, salesperson, customer, and price, and submit button.
     // The select and option tags are formatted differently than input tags
@@ -132,9 +181,9 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
                         <form onSubmit={handleSubmit} id="record-sale-form">
                             <div className="form-floating mb-3">
                                 <label htmlFor='automobile'>Automobile VIN</label>
-                                <select className="form-select" placeholder="Choose an automobile VIN" required name="automobile" id="automobile" value={automobile} onChange={handleAutomobileChange}>
+                                <select className="form-select" required name="automobile" id="automobile" value={automobile} onChange={handleAutomobileChange}>
                                     {/* option element should have the value attribute set to an empty string, so user is indicated to select an option. */}
-                                    <option value="">Choose an Automobile</option>
+                                    <option value="">Choose an Automobile VIN</option>
                                         {automobiles.map(automobile => {
                                             if (!automobile.sold) {
                                                 return (
@@ -149,7 +198,7 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
                             </div>
                             <div className="form-floating mb-3">
                                 <label htmlFor='salesperson'>Salesperson</label>
-                                <select className="form-select" placeholder="Choose a salesperson" required name="salesperson" id="salesperson" value={salesperson} onChange={handleSalespersonChange}>
+                                <select className="form-select" required name="salesperson" id="salesperson" value={salesperson} onChange={handleSalespersonChange}>
                                     <option value="">Choose a salesperson</option>
                                         {salespeople.map(salesperson => {
                                             return (
@@ -162,7 +211,7 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
                             </div>
                             <div className="form-floating mb-3">
                                 <label htmlFor='customer'>Customer</label>
-                                <select className="form-select" placeholder="Choose a customer" required name="customer" id="customer" value={customer} onChange={handleCustomerChange}>
+                                <select className="form-select" required name="customer" id="customer" value={customer} onChange={handleCustomerChange}>
                                     <option value="">Choose a customer</option>
                                         {customers.map(customer => {
                                             return (
