@@ -40,16 +40,16 @@ function ServiceHistory() {
         {appointments.map(appointment => {
             const dateTimeObj = new Date(appointment.date_time);
             const formattedDate = `${dateTimeObj.getMonth() + 1}/${dateTimeObj.getDate()}/${dateTimeObj.getFullYear()}`;
-            const hours = dateTimeObj.getHours();
-            const minutes = String(dateTimeObj.getMinutes()).padStart(2, '0');
-            const seconds = String(dateTimeObj.getSeconds()).padStart(2, '0');
+            const hours = dateTimeObj.getUTCHours();
+            const minutes = String(dateTimeObj.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(dateTimeObj.getUTCSeconds()).padStart(2, '0');
             const isPM = hours >= 12;
             const formattedTime = `${hours % 12 || 12}:${minutes}:${seconds} ${isPM ? 'PM' : 'AM'}`;
             
             return (
                 <tr key={appointment.id}>
                     <td>{ appointment.vin }</td>
-                    <td>{ appointment.is_vip }</td>
+                    <td>{ appointment.is_vip ? "Yes" : "No" }</td>
                     <td>{ appointment.customer }</td>
                     <td>{ formattedDate }</td>
                     <td>{ formattedTime }</td>
