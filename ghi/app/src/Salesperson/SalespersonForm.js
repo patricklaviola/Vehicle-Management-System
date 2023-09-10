@@ -77,7 +77,7 @@ function SalespersonForm ({fetchSalespeople}) {
                                 <div className="mb-3">
                                     <input className="form-control" type="text" placeholder="Employee ID..." required name="employee_id" id="employee_id" value={employee_id} onChange={handleEmployeeIdChange}/>
                                 </div>
-                            <button className="btn btn-primary">Submit</button>
+                            <button type="submit" className="btn btn-primary">Submit</button>
                         </form>
                     </div>
                 </div>

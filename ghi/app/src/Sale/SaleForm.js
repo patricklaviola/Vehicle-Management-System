@@ -181,7 +181,7 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
                                 <div className="mb-3">
                                     <input className="form-control" type="text" placeholder="$$$" required name="price" id="price" value={price} onChange={handlePriceChange}/>
                                 </div>
-                            <button className="btn btn-primary">Submit</button>
+                            <button type="submit" className="btn btn-primary">Submit</button>
                         </form>
                     </div>
                 </div>

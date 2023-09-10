@@ -85,7 +85,7 @@ function CustomerForm ({fetchCustomers}) {
                                 <div className="mb-3">
                                     <input className="form-control" type="text" placeholder="Phone Number..." required name="phone_number" id="phone_number" value={phone_number} onChange={handlePhoneNumberChange}/>
                                 </div>
-                            <button className="btn btn-primary">Submit</button>
+                            <button type="submit" className="btn btn-primary">Submit</button>
                         </form>
                     </div>
                 </div>
