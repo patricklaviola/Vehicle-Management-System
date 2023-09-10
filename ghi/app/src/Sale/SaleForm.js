@@ -39,40 +39,6 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
     };
 
 
-    // Define fetchSaleDataForAllCategories function and call it when the component mounts: 
-    const fetchSalesDataForAllCategories = async () => {
-        // Send GET request to the automobiles API endpoint
-        const automobileUrl = "http://localhost:8090/api/automobiles/";
-        const automobileResponse = await fetch(automobileUrl);
-        if (automobileResponse.ok) {
-            // If the request is successful, update state variable with response data 
-            const automobileJson = await automobileResponse.json();
-            setAutomobiles(automobileJson);
-        };
-        // Send GET request to the salespeople API endpoint
-        const salespersonUrl = "http://localhost:8090/api/salespeople/";
-        const salespersonResponse = await fetch(salespersonUrl);
-        if (salespersonResponse.ok) {
-            // if the the request is successful, update state variable with response data 
-            const salespersonJson = await salespersonResponse.json();
-            setSalespeople(salespersonJson);
-        };
-        // Send GET response to the customer API endpoint 
-        const customerUrl = "http://localhost:8090/api/customers/";
-        const customerResponse = await fetch(customerUrl);
-        if (customerResponse.ok) {
-            // if the the request is successful, update state variable with response data 
-            const customerJson = await customerResponse.json();
-            setCustomers(customerJson);
-        };
-    };
-
-    // Call fetchData function when component mounts to update state variables with inital data using useEffect hook:
-    useEffect(() => {
-        fetchSalesDataForAllCategories();
-    }, []);
-
-
     // Define handleSubmit function to handle form submission
     const handleSubmit = async (e) => {
         // Prevent default form submission behavior
@@ -126,6 +92,39 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
         };
     };
 
+    // Define fetchSaleDataForAllCategories function and call it when the component mounts: 
+    const fetchSalesDataForAllCategories = async () => {
+        // Send GET request to the automobiles API endpoint
+        const automobileUrl = "http://localhost:8090/api/cars/";
+        const automobileResponse = await fetch(automobileUrl);
+        if (automobileResponse.ok) {
+            // If the request is successful, update state variable with response data 
+            const automobileJsonData = await automobileResponse.json();
+            setAutomobiles(automobileJsonData.automobiles);
+        };
+        // Send GET request to the salespeople API endpoint
+        const salespersonUrl = "http://localhost:8090/api/salespeople/";
+        const salespersonResponse = await fetch(salespersonUrl);
+        if (salespersonResponse.ok) {
+            // if the the request is successful, update state variable with response data 
+            const salespersonJsonData = await salespersonResponse.json();
+            setSalespeople(salespersonJsonData.salespeople);
+        };
+        // Send GET response to the customer API endpoint 
+        const customerUrl = "http://localhost:8090/api/customers/";
+        const customerResponse = await fetch(customerUrl);
+        if (customerResponse.ok) {
+            // if the the request is successful, update state variable with response data 
+            const customerJsonData = await customerResponse.json();
+            setCustomers(customerJsonData.customers);
+        };
+    };
+
+    // Call fetchData function when component mounts to update state variables with inital data using useEffect hook:
+    useEffect(() => {
+        fetchSalesDataForAllCategories();
+    }, []);
+
     // Return JSX element that renders form with the input fields for automobile VIN, salesperson, customer, and price, and submit button.
     // The select and option tags are formatted differently than input tags
     return (
@@ -134,50 +133,54 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
                 <div className ="offset-3 col-6">
                     <div className="shadow p-4 mt-4">
                         <h1>Record a New Sale</h1>
-                        <form onSubmit={handleSubmit} id="record-sale-form">
-                            <div className="form-floating mb-3">
-                                <select className="form-select" placeholder="Choose an automobile VIN" required name="automobile" id="automobile" value={automobile} onChange={handleAutomobileChange}>
-                                    {/* option element should have the value attribute set to an empty string, so user is indicated to select an option. */}
-                                    <option value="">Choose an Automobile</option>
-                                        {automobiles.map(automobile => {
-                                            if (!automobile.sold) {
+                        <form onSubmit={handleSubmit} id="new-sale-form">
+                            <label htmlFor='automobile'>Automobile VIN</label>
+                                <div className="mb-3">
+                                    <select className="form-select" required name="automobile" id="automobile" value={automobile} onChange={handleAutomobileChange}>
+                                        {/* option element should have the value attribute set to an empty string, so user is indicated to select an option. */}
+                                        <option value="">Choose an automobile VIN...</option>
+                                            {automobiles.map(automobile => {
+                                                if (!automobile.sold) {
+                                                    return (
+                                                        <option key={automobile.id} value={automobile.id}>
+                                                            {automobile.vin}
+                                                        </option>
+                                                    );
+                                                }
+                                                return undefined;
+                                            })}
+                                    </select>
+                                </div>
+                            <label htmlFor='salesperson'>Salesperson</label>
+                                <div className="mb-3">
+                                    <select className="form-select" required name="salesperson" id="salesperson" value={salesperson} onChange={handleSalespersonChange}>
+                                        <option value="">Choose a salesperson...</option>
+                                            {salespeople.map(salesperson => {
                                                 return (
-                                                    <option key={automobile.id} value={automobile.id}>
-                                                        {automobile.vin}
+                                                    <option key={salesperson.id} value={salesperson.id}>
+                                                        {salesperson.first_name} {salesperson.last_name}
                                                     </option>
                                                 );
-                                            }
-                                            return undefined;
-                                        })}
-                                </select>
-                            </div>
-                            <div className="form-floating mb-3">
-                                <select className="form-select" placeholder="Choose a salesperson" required name="salesperson" id="salesperson" value={salesperson} onChange={handleSalespersonChange}>
-                                    <option value="">Choose a salesperson</option>
-                                        {salespeople.map(salesperson => {
-                                            return (
-                                                <option key={salesperson.id} value={salesperson.id}>
-                                                    {salesperson.first_name} {salesperson.last_name}
-                                                </option>
-                                            );
-                                        })}
-                                </select>
-                            </div>
-                            <div className="form-floating mb-3">
-                                <select className="form-select" placeholder="Choose a customer" required name="customer" id="customer" value={customer} onChange={handleCustomerChange}>
-                                    <option value="">Choose a customer</option>
-                                        {customers.map(customer => {
-                                            return (
-                                                <option key={customer.id} value={customer.id}>
-                                                    {customer.first_name} {customer.last_name}
-                                                </option>
-                                            );
-                                        })}
-                                </select>
-                            </div>
-                            <div className="form-floating mb-3">
-                                <input className="form-control" type="text" placeholder="Price" required name="price" id="price" value={price} onChange={handlePriceChange}/>
-                            </div>
+                                            })}
+                                    </select>
+                                </div>
+                            <label htmlFor='customer'>Customer</label>
+                                <div className="mb-3">
+                                    <select className="form-select" required name="customer" id="customer" value={customer} onChange={handleCustomerChange}>
+                                        <option value="">Choose a customer...</option>
+                                            {customers.map(customer => {
+                                                return (
+                                                    <option key={customer.id} value={customer.id}>
+                                                        {customer.first_name} {customer.last_name}
+                                                    </option>
+                                                );
+                                            })}
+                                    </select>
+                                </div>
+                            <label htmlFor='price'>Price</label>
+                                <div className="mb-3">
+                                    <input className="form-control" type="text" placeholder="$$$" required name="price" id="price" value={price} onChange={handlePriceChange}/>
+                                </div>
                             <button className="btn btn-primary">Submit</button>
                         </form>
                     </div>

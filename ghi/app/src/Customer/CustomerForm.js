@@ -69,21 +69,21 @@ function CustomerForm ({fetchCustomers}) {
                     <div className="shadow p-4 mt-4">
                         <h1>Add a Customer</h1>
                         <form onSubmit={handleSubmit} id="new-customer-form">
-                                <div className="form-floating mb-3">
-                                    <label htmlFor='first_name'>First Name</label>
-                                    <input className="form-control" type="text" placeholder="First Name" required name="first_name" id="first_name" value={first_name} onChange={handleFirstNameChange}/>
+                            <label htmlFor='first_name'>First Name</label>
+                                <div className="mb-3">
+                                    <input className="form-control" type="text" placeholder="First Name..." required name="first_name" id="first_name" value={first_name} onChange={handleFirstNameChange}/>
                                 </div>
-                                <div className="form-floating mb-3">
-                                    <label htmlFor='last_name'>Last Name</label>
-                                    <input className="form-control" type="text" placeholder="Last Name" required name="last_name" id="last_name" value={last_name} onChange={handleLastNameChange}/>
+                            <label htmlFor='last_name'>Last Name</label>
+                                <div className="mb-3">
+                                    <input className="form-control" type="text" placeholder="Last Name..." required name="last_name" id="last_name" value={last_name} onChange={handleLastNameChange}/>
                                 </div>
-                                <div className="form-floating mb-3">
-                                    <label htmlFor='address'>Address</label>
-                                    <input className="form-control" type="text" placeholder="Address" required name="address" id="address" value={address} onChange={handleAddressChange}/>
+                            <label htmlFor='address'>Address</label>
+                                <div className="mb-3">
+                                    <input className="form-control" type="text" placeholder="Address..." required name="address" id="address" value={address} onChange={handleAddressChange}/>
                                 </div>
-                                <div className="form-floating mb-3">
-                                    <label htmlFor='phone_number'>Phone Number</label>
-                                    <input className="form-control" type="text" placeholder="Phone Number" required name="phone_number" id="phone_number" value={phone_number} onChange={handlePhoneNumberChange}/>
+                            <label htmlFor='phone_number'>Phone Number</label>
+                                <div className="mb-3">
+                                    <input className="form-control" type="text" placeholder="Phone Number..." required name="phone_number" id="phone_number" value={phone_number} onChange={handlePhoneNumberChange}/>
                                 </div>
                             <button className="btn btn-primary">Submit</button>
                         </form>
