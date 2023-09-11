@@ -14,13 +14,13 @@ function SaleForm () {
     const [autos, setAutos] = useState([]);
     const [salespeople, setSalespeople] = useState([]);
     const [customers, setCustomers] = useState([]);
-    const [automobile, setAutomobile] = useState('');
+    const [auto, setAuto] = useState('');
     const [salesperson, setSalesperson] = useState('');
     const [customer, setCustomer] = useState('');
     const [price, setPrice] = useState('');
 
-    const handleAutomobileChange = (e) => {
-        setAutomobile(e.target.value);
+    const handleAutoChange = (e) => {
+        setAuto(e.target.value);
     };
     const handleSalespersonChange = (e) => {
         setSalesperson(e.target.value);
@@ -69,7 +69,7 @@ function SaleForm () {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newSaleData = {
-            automobile: automobile,
+            auto: auto,
             salesperson: salesperson,
             customer: customer,
             price: price
@@ -85,7 +85,7 @@ function SaleForm () {
         };
         const saleResponse = await fetch(saleUrl, saleFetchConfig);
         if (saleResponse.ok) {
-            setAutomobile('');
+            setAuto('');
             setSalesperson('');
             setCustomer('');
             setPrice('');
@@ -98,9 +98,9 @@ function SaleForm () {
                     <div className="shadow p-4 mt-4">
                         <h1>Record a New Sale</h1>
                         <form onSubmit={handleSubmit} id="new-sale-form">
-                            <label htmlFor='automobile'>Automobile VIN</label>
+                            <label htmlFor='auto'>Automobile VIN</label>
                                 <div className="mb-3">                                 
-                                    <select className="form-select" required name="automobile" id="automobile" value={automobile} onChange={handleAutomobileChange}>
+                                    <select className="form-select" required name="auto" id="auto" value={auto} onChange={handleAutoChange}>
                                         <option value="">Choose an automobile VIN...</option>
                                         {autos.map(auto => {
                                             return(
