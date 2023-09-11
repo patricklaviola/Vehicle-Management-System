@@ -18,7 +18,7 @@ function TechniciansList() {
   
   return (
     <>
-    <h2>Technicians</h2>
+    <h1 className='py-4'>Technicians</h1>
     <table className="table table-striped">
       <thead>
         <tr>

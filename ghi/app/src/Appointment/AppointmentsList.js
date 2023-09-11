@@ -56,7 +56,7 @@ function AppointmentsList() {
   
   return (
     <>
-    <h2>Service Appointments</h2>
+    <h1 className='py-4'>Service Appointments</h1>
     <table className="table table-striped">
       <thead>
         <tr>
