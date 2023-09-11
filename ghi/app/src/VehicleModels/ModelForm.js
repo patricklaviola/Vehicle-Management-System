@@ -63,7 +63,7 @@ function ModelForm({fetchModels}) {
         <div className="row">
             <div className="offset-3 col-6">
                 <div className="shadow p-4 mt-4">
-                    <h1>Create a vehicle model</h1>
+                    <h1>Create a Vehicle Model</h1>
                     <form onSubmit={handleSubmit}>
                     <label htmlFor="model_name">Model name...</label>
                         <div className="mb-3">
