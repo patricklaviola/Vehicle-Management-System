@@ -34,7 +34,7 @@ function ModelsList() {
                                     <td>{model.name}</td>
                                     <td>{model.manufacturer.name}</td>
                                     <td>
-                                        <img style={{width: 300, height: 300}} src={model.picture} alt={model.name} />
+                                        <img style={{width: 200, height: 200}} src={model.picture_url} alt={model.name} />
                                     </td>
                                 </tr>
                             );
