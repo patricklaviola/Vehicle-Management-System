@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 function SalespeopleList() {
     const [salespeople, setSalespeople] = useState([])
 
-    const fetchSalespeopleData = async () => {
+    const fetchSalespeople = async () => {
         const response = await fetch("http://localhost:8090/api/salespeople/");
         if (response.ok) {
             const data = await response.json();
@@ -13,7 +13,7 @@ function SalespeopleList() {
     }
 
     useEffect(() => {
-        fetchSalespeopleData();
+        fetchSalespeople();
     }, []);
     
     return (

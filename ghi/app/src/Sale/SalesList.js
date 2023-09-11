@@ -5,17 +5,17 @@ import { useEffect, useState } from 'react';
 function SalesList() {
     const [sales, setSales] = useState([])
 
-    const fetchSalesData = async () => {
-        const response = await fetch("http://localhost:8090/api/sales/");
-        if (response.ok) {
-            const data = await response.json();
-            setSales(data.sales);
+        const fetchSales = async () => {
+            const response = await fetch("http://localhost:8090/api/sales/");
+            if (response.ok) {
+                const data = await response.json();
+                setSales(data.sale);
+            }
         }
-    }
 
-    useEffect(() => {
-        fetchSalesData();
-    }, []);
+        useEffect(() => {
+            fetchSales();
+        }, []);
 
     return (
         <>

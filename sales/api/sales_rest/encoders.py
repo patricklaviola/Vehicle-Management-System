@@ -8,6 +8,14 @@ from .models import (
 from decimal import Decimal
 
 
+class AutomobileVOEncoder(ModelEncoder):
+    model = AutomobileVO
+    properties = [
+        "id",
+        "vin",
+    ]
+
+
 class SalespersonEncoder(ModelEncoder):
     model = Salesperson
     properties = [
@@ -16,6 +24,9 @@ class SalespersonEncoder(ModelEncoder):
         "last_name",
         "employee_id"
     ]
+    encoders = {
+        "automobile": AutomobileVOEncoder()
+    }
 
 
 class CustomerEncoder(ModelEncoder):
@@ -27,15 +38,9 @@ class CustomerEncoder(ModelEncoder):
         "address",
         "phone_number"
     ]
-
-
-class AutomobileVOEncoder(ModelEncoder):
-    model = AutomobileVO
-    properties = [
-        "id",
-        "vin",
-        "sold"
-    ]
+    encoders = {
+        "automobile": AutomobileVOEncoder()
+    }
 
 
 def decimal_to_str(o):
@@ -53,7 +58,7 @@ class SaleEncoder(ModelEncoder):
         "customer",
         "price"
     ]
-    
+
     def default(self, o):
         try:
             return super().default(o)

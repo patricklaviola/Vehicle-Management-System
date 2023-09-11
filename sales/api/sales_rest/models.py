@@ -11,7 +11,7 @@ class Salesperson(models.Model):
         return f"{self.first_name} {self.last_name}"
 
     def get_api_url(self):
-        return reverse("api_salesperson", kwargs={"pk": self.id})
+        return reverse("api_salesperson", kwargs={"id": self.id})
 
 
 class Customer(models.Model):
@@ -24,7 +24,7 @@ class Customer(models.Model):
         return f"{self.first_name} {self.last_name}"
 
     def get_api_url(self):
-        return reverse("api_customer", kwargs={"pk": self.id})
+        return reverse("api_customer", kwargs={"id": self.id})
 
 
 class AutomobileVO(models.Model):
@@ -34,32 +34,36 @@ class AutomobileVO(models.Model):
     def __str__(self):
         return self.vin
 
-    # Report a sale: this marks the vehicle as sold and saves the model
-    def sell(self):
-        self.sold = True
-        self.save()
+    def get_api_url(self):
+        return reverse("api_automobile", kwargs={"id": self.id})
+
+    # # Report a sale: this marks the vehicle as sold and saves the model
+    # def sell(self):
+    #     self.sold = True
+    #     self.save()
 
 
 class Sale(models.Model):
     automobile = models.ForeignKey(
         AutomobileVO,
-        related_name="sales",
+        related_name="sale",
         on_delete=models.CASCADE,
     )
     salesperson = models.ForeignKey(
         Salesperson,
-        related_name="salesperson",
+        related_name="sale",
         on_delete=models.CASCADE,
     )
     customer = models.ForeignKey(
         Customer,
-        related_name="customer",
+        related_name="sale",
         on_delete=models.CASCADE,
     )
     price = models.DecimalField(max_digits=20, decimal_places=2, null=False)
 
     def __str__(self):
-        return f"{self.automobile} sold to {self.customer} by {self.salesperson}"
+        return f"{self.automobile} sold to {self.customer} "\
+            f" by {self.salesperson}"
 
     def get_api_url(self):
-        return reverse("api_sale", kwargs={"pk": self.id})
+        return reverse("api_sale", kwargs={"id": self.id})

@@ -12,10 +12,10 @@ import React, { useEffect, useState } from 'react';
 
 function SaleForm () {
     const [autos, setAutos] = useState([]);
-    const [salespeople, setSalespeople] = useState([]);
-    const [customers, setCustomers] = useState([]);
     const [auto, setAuto] = useState('');
+    const [salespeople, setSalespeople] = useState([]);
     const [salesperson, setSalesperson] = useState('');
+    const [customers, setCustomers] = useState([]);
     const [customer, setCustomer] = useState('');
     const [price, setPrice] = useState('');
 
@@ -33,14 +33,18 @@ function SaleForm () {
     };
     
 
-    const fetchAutos = async () => {
-		const url = "http://localhost:8100/api/automobiles/";
-		const response = await fetch(url);
-		if (response.ok) {
-			const data = await response.json();
-			setAutos(data.autos);
-		}
-	};
+        const fetchAutos = async () => {
+            const url = "http://localhost:8100/api/automobiles/";
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                setAutos(data.autos);
+            }
+        };
+
+        useEffect(() => {
+            fetchAutos();
+        }, []);
 
     const fetchSalespeople = async () => {
         const url = "http://localhost:8090/api/salespeople/";
@@ -50,6 +54,10 @@ function SaleForm () {
             setSalespeople(data.salespeople);
         }
     };
+
+    useEffect(() => {
+        fetchSalespeople();
+    }, []);
 
     const fetchCustomers = async () => {
         const url = "http://localhost:8090/api/customers/";
@@ -61,8 +69,6 @@ function SaleForm () {
     };
 
     useEffect(() => {
-        fetchAutos();
-        fetchSalespeople();
         fetchCustomers();
     }, []);
 
