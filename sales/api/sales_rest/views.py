@@ -229,18 +229,18 @@ def api_sales(request):
         content = json.loads(request.body)
         # Automobiles
         try:
-            # vin = content["automobile"]
-            # automobile = AutomobileVO.objects.get(vin=vin)
-            # content["automobile"] = automobile
-            content["automobile"] = AutomobileVO.objects.get(
-                vin=content["automobile"])
+            vin = content["automobile"]
+            automobile = AutomobileVO.objects.get(vin=vin)
+            content["automobile"] = automobile
+            # content["automobile"] = AutomobileVO.objects.get(
+            #     vin=content["automobile"])
         except ValueError as e:
             response = JsonResponse(
                 {"message": "Invalid Automobile ID: {}".format(str(e))}
             )
             response.status_code = 400
             return response
-        if content["auto"].sold:
+        if content["automobile"].sold:
             response = JsonResponse(
                 {"message": "Automobile has already been sold"}
             )
@@ -260,8 +260,8 @@ def api_sales(request):
             return response
         # Customer
         try:
-            # customer = Customer.objects.get(first_name=content["customer"])
-            customer = Customer.objects.get(id=content["customer"])
+            customer = Customer.objects.get(first_name=content["customer"])
+            # customer = Customer.objects.get(id=content["customer"])
             content['customer'] = customer
         except ValueError as e:
             response = JsonResponse(
@@ -347,24 +347,30 @@ been sold.
 '''
 
 
-@require_http_methods(["GET"])
-def api_salesperson_history(request, id):
-    if request.method == "GET":
-        try:
-            # salesperson = Salesperson.objects.get(id=id)
-            sales = Sale.objects.filter(id=id)
-            # sales = Sale.objects.filter(id=id)
-            response = {
-                "message": "Sales history retrieved successfully",
-                "sales": sales,
-            }
-            return JsonResponse(
-                response,
-                enoder=SalespersonEncoder
-            )
-        except Sale.DoesNotExist:
-            response = JsonResponse(
-                {"message": "Sales history does not exist"}
-            )
-            response.status_code = 404
-            return response
+# @require_http_methods(["GET"])
+# def api_salesperson_history(request, id):
+#     if request.method == "GET":
+#         try:
+#             salesperson = Salesperson.objects.get(id=id)
+#             sales = Sale.objects.filter(salesperson=salesperson)
+#             response = {
+#                 "message": "Sales history retrieved successfully",
+#                 "sales": sales,
+#             }
+#             return JsonResponse(
+#                 response,
+#                 encoder=SalespersonEncoder,
+#                 safe=False
+#             )
+#         except Salesperson.DoesNotExist:
+#             response = JsonResponse(
+#                 {"message": "Salesperson does not exist"}
+#             )
+#             response.status_code = 404
+#             return response
+#         except Sale.DoesNotExist:
+#             response = JsonResponse(
+#                 {"message": "Sales history does not exist"}
+#             )
+#             response.status_code = 404
+#             return response

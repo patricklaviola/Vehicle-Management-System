@@ -33,18 +33,18 @@ function SaleForm () {
     };
     
 
-        const fetchAutos = async () => {
-            const url = "http://localhost:8100/api/automobiles/";
-            const response = await fetch(url);
-            if (response.ok) {
-                const data = await response.json();
-                setAutos(data.autos);
-            }
-        };
+    const fetchAutos = async () => {
+        const url = "http://localhost:8100/api/automobiles/";
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            setAutos(data.autos);
+        }
+    };
 
-        useEffect(() => {
-            fetchAutos();
-        }, []);
+    useEffect(() => {
+        fetchAutos();
+    }, []);
 
     const fetchSalespeople = async () => {
         const url = "http://localhost:8090/api/salespeople/";
@@ -75,22 +75,22 @@ function SaleForm () {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newSaleData = {
-            auto: auto,
+            automobile: auto,
             salesperson: salesperson,
             customer: customer,
             price: price
         };
 
         const saleUrl = "http://localhost:8090/api/sales/";
-        const saleFetchConfig = {
+        const fetchConfig = {
             method: "POST",
             body: JSON.stringify(newSaleData),
             headers: {
                 'Content-Type': 'application/json',
             },
         };
-        const saleResponse = await fetch(saleUrl, saleFetchConfig);
-        if (saleResponse.ok) {
+        const response = await fetch(saleUrl, fetchConfig);
+        if (response.ok) {
             setAuto('');
             setSalesperson('');
             setCustomer('');
@@ -136,7 +136,7 @@ function SaleForm () {
                                         <option value="">Choose a customer...</option>
                                             {customers.map(customer => {
                                                 return (
-                                                    <option key={customer.id} value={customer.id}>
+                                                    <option key={customer.first_name} value={customer.first_name}>
                                                         {customer.first_name} {customer.last_name}
                                                     </option>
                                                 );
