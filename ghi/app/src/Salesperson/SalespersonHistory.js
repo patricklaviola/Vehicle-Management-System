@@ -13,8 +13,14 @@ function SalespersonHistory() {
     const [salespeople, setSalespeople] = useState([]);
     const [salesperson, setSalesperson] = useState('');
 
-    const handleSalespersonChange = (e) => {
+    const handleSalespersonChange = async (e) => {
         setSalesperson(e.target.value);
+        const salespersonUrl = `http://localhost:8090/api/sales/history/${salesperson.salesperson.id}/`;
+        const searchResponse = await fetch(salespersonUrl);
+        if (searchResponse.ok) {
+            const searchJsonData = await searchResponse.json();
+            setSales(searchJsonData.sales);
+        }
     };
 
     const fetchSalespersonData = async () => {

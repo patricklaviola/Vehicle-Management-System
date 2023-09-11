@@ -22,7 +22,11 @@ urlpatterns = [
         name="api_salesperson_details",
     ),
     path(
+<<<<<<< HEAD
         "sales/history/<int:id>",
+=======
+        "sales/history/<int:id>/",
+>>>>>>> main
         api_salesperson_history,
         name="api_salesperson_history"
     ),

@@ -3,11 +3,11 @@
 
 import React, { useState } from 'react';
 
-function SalespersonForm ({fetchSalespeople}) {
+function SalespersonForm () {
     // Define state variables using useState hook to manage the following:
-    const [first_name, setFirstName] = useState([]);
-    const [last_name, setLastName] = useState([]);
-    const [employee_id, setEmployeeId] = useState([]);
+    const [first_name, setFirstName] = useState('');
+    const [last_name, setLastName] = useState('');
+    const [employee_id, setEmployeeId] = useState('');
 
     // Define event handlers for each input field using useState hook:
     // Updates specified first name
@@ -26,7 +26,7 @@ function SalespersonForm ({fetchSalespeople}) {
     // Define handleSubmit function to handle form submission
     const handleSubmit = async (e) => {
         // Prevent default from submission behavior
-        e.preventDefaulkt();
+        e.preventDefault();
         // Create newSalespersonData object with selected data
         const newSalespersonData = {
             first_name: first_name,
@@ -48,8 +48,6 @@ function SalespersonForm ({fetchSalespeople}) {
         
         // If request is successful, update the state variables using the fetch function for salespeople
         if (salespersonResponse.ok) {
-            // Fetch updated data from API endpoint
-            fetchSalespeople();
             // Reset input fields to their inital state 
             setFirstName('');
             setLastName('');

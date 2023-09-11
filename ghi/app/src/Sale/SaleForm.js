@@ -10,7 +10,7 @@ SPECIAL FEATURE 1: Unsold Only
 import React, { useEffect, useState } from 'react';
 
 
-function SaleForm ({fetchSales, fetchAutomobiles}) {
+function SaleForm () {
     // Define state variables using useState hook to manage the following:
     const [automobiles, setAutomobiles] = useState([]);
     const [salespeople, setSalespeople] = useState([]);
@@ -37,65 +37,12 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
     const handlePriceChange = (e) => {
         setPrice(e.target.value);
     };
-
-
-    // Define handleSubmit function to handle form submission
-    const handleSubmit = async (e) => {
-        // Prevent default form submission behavior
-        e.preventDefault();
-        // Create newSaleData object with selected data
-        const newSaleData = {
-            automobile: automobile,
-            salesperson: salesperson,
-            customer: customer,
-            price: price
-        };
-
-        // fetchSales, pass as prop to the SaleForm component
-        // Define URL and fetch configuration for new sale data
-        const saleUrl = "http://localhost:8090/api/sales/";
-        const saleFetchConfig = {
-            method: "POST",
-            body: JSON.stringify(newSaleData),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-        // Send POST request to the sales API endpoint with newSaleData as the body
-        const saleResponse = await fetch(saleUrl, saleFetchConfig);
-
-        // fetchAutomobiles, pass as prop to the SaleForm component
-        // Fefine URL and fetch configuration for automobile data
-        const automobileUrl = `http://localhost:8100${automobile}`;
-        const automobileFetchConfig = {
-            method: "PUT",
-            body: JSON.stringify({sold: true}),
-
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-        // Send PUT request to the automobile API endpoint with sold field set to true for the selected automobile
-        const automobileResponse = await fetch(automobileUrl, automobileFetchConfig);
-
-       // If both requests are successful, update state variables using fetch functions and reset input fields 
-        if (saleResponse.ok && automobileResponse.ok) {
-            // Fetch updated data from API endpoints 
-            fetchSales();
-            fetchAutomobiles();
-            fetchSalesDataForAllCategories();
-            // Reset input fields to their inital state
-            setAutomobile('');
-            setSalesperson('');
-            setCustomer('');
-            setPrice('');
-        };
-    };
+    
 
     // Define fetchSaleDataForAllCategories function and call it when the component mounts: 
     const fetchSalesDataForAllCategories = async () => {
         // Send GET request to the automobiles API endpoint
-        const automobileUrl = "http://localhost:8090/api/cars/";
+        const automobileUrl = "	http://localhost:8090/api/cars/";
         const automobileResponse = await fetch(automobileUrl);
         if (automobileResponse.ok) {
             // If the request is successful, update state variable with response data 
@@ -125,6 +72,59 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
         fetchSalesDataForAllCategories();
     }, []);
 
+    // Define handleSubmit function to handle form submission
+    const handleSubmit = async (e) => {
+        // Prevent default form submission behavior
+        e.preventDefault();
+        // Create newSaleData object with selected data
+        const newSaleData = {
+            automobile: automobile,
+            salesperson: salesperson,
+            customer: customer,
+            price: price
+        };
+
+        // fetchSales, pass as prop to the SaleForm component
+        // Define URL and fetch configuration for new sale data
+        const saleUrl = "http://localhost:8090/api/sales/";
+        const saleFetchConfig = {
+            method: "POST",
+            body: JSON.stringify(newSaleData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        // Send POST request to the sales API endpoint with newSaleData as the body
+        const saleResponse = await fetch(saleUrl, saleFetchConfig);
+
+        // fetchAutomobiles, pass as prop to the SaleForm component
+        // Fefine URL and fetch configuration for automobile data
+        const selectedAutomobile = automobiles.find(auto => auto.id === automobile);
+        const selectedVIN = selectedAutomobile ? selectedAutomobile.vin : '';
+        const automobileUrl = `http://localhost:8100/api/automobiles/${selectedVIN}/`;
+        // const automobileUrl = `http://localhost:8100/api/automobiles/`;
+        const automobileFetchConfig = {
+            method: "PUT",
+            body: JSON.stringify({sold: true}),
+
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        // Send PUT request to the automobile API endpoint with sold field set to true for the selected automobile
+        const automobileResponse = await fetch(automobileUrl, automobileFetchConfig);
+
+       // If both requests are successful, update state variables using fetch functions and reset input fields 
+        if (saleResponse.ok && automobileResponse.ok) {
+            // fetchSalesDataForAllCategories();
+            // Reset input fields to their inital state
+            setAutomobile('');
+            setSalesperson('');
+            setCustomer('');
+            setPrice('');
+        };
+    };
+
     // Return JSX element that renders form with the input fields for automobile VIN, salesperson, customer, and price, and submit button.
     // The select and option tags are formatted differently than input tags
     return (
@@ -135,21 +135,17 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
                         <h1>Record a New Sale</h1>
                         <form onSubmit={handleSubmit} id="new-sale-form">
                             <label htmlFor='automobile'>Automobile VIN</label>
-                                <div className="mb-3">
+                                <div className="mb-3">                                 
                                     <select className="form-select" required name="automobile" id="automobile" value={automobile} onChange={handleAutomobileChange}>
-                                        {/* option element should have the value attribute set to an empty string, so user is indicated to select an option. */}
                                         <option value="">Choose an automobile VIN...</option>
-                                            {automobiles.map(automobile => {
-                                                if (!automobile.sold) {
-                                                    return (
-                                                        <option key={automobile.id} value={automobile.id}>
-                                                            {automobile.vin}
-                                                        </option>
-                                                    );
-                                                }
-                                                return undefined;
-                                            })}
-                                    </select>
+                                        {automobiles.filter(automobile => automobile.sold === false).map(automobile => {
+                                            return(
+                                                <option key={automobile.id} value={automobile.id}>
+                                                    {automobile.vin}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>                                    
                                 </div>
                             <label htmlFor='salesperson'>Salesperson</label>
                                 <div className="mb-3">
@@ -179,7 +175,7 @@ function SaleForm ({fetchSales, fetchAutomobiles}) {
                                 </div>
                             <label htmlFor='price'>Price</label>
                                 <div className="mb-3">
-                                    <input className="form-control" type="text" placeholder="$$$" required name="price" id="price" value={price} onChange={handlePriceChange}/>
+                                    <input className="form-control" type="number" placeholder="$$$" required name="price" id="price" value={price} onChange={handlePriceChange}/>
                                 </div>
                             <button type="submit" className="btn btn-primary">Submit</button>
                         </form>
