@@ -72,15 +72,15 @@ function AutomobileForm({fetchAutomobiles}) {
                         <div>
                             <h1>Add an Automobile to Inventory</h1>
                             <form onSubmit={handleSubmit}>
-                                <label htmlFor="color">Color</label>
+
                                     <div className="mb-3">
                                         <input className="form-control" type="text" placeholder="Color..." required name="color" id="color" value={color} onChange={handleColorChange}/>
                                     </div>
-                                <label htmlFor="year">Year</label>
+
                                     <div className="mb-3">
                                         <input className="form-control" type="text" placeholder="Year..." required name="year" id="year" value={year} onChange={handleYearChange}/>
                                     </div>
-                                <label htmlFor="vin">Automobile VIN</label>
+
                                     <div className="mb-3">
                                         <input className="form-control" type="text" placeholder="VIN..." required name="vin" id="vin" value={vin} onChange={handleVinChange} />
                                     </div>

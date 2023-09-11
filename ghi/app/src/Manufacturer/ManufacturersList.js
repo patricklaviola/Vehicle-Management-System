@@ -18,7 +18,7 @@ function ManufacturersList() {
 
     return (
         <>
-            <h1>Manufacturers</h1>
+            <h1 className='py-4'>Manufacturers</h1>
             <div>
                 <table className="table table-striped">
                     <thead>
