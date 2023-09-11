@@ -22,7 +22,7 @@ urlpatterns = [
         name="api_salesperson_details",
     ),
     path(
-        "salespeople/<int:id>/sales/",
+        "sales/history/<int:id>/",
         api_salesperson_history,
         name="api_salesperson_history"
     ),

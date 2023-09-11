@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 
-function CustomerForm ({fetchCustomers}) {
+function CustomerForm () {
     // Define state variables using useState hook to manage the following:
     const [first_name, setFirstName] = useState([]);
     const [last_name, setLastName] = useState([]);
@@ -41,7 +41,7 @@ function CustomerForm ({fetchCustomers}) {
         };
 
         // Send POST request to the sales API endpoint with newCustomerData as the body
-        const customerUrl = "http://localhost:8090/api/customers";
+        const customerUrl = "http://localhost:8090/api/customers/";
         const customerFetchConfig = {
             method: "POST",
             body: JSON.stringify(newCustomerData),
@@ -53,7 +53,6 @@ function CustomerForm ({fetchCustomers}) {
         // If request is successful, update state variables using fetch function for customers, and reset all input fields to their initial state. 
         const customerFetchResponse = await fetch(customerUrl, customerFetchConfig);
         if (customerFetchResponse.ok) {
-            fetchCustomers();
             setFirstName('');
             setLastName('');
             setAddress('');
