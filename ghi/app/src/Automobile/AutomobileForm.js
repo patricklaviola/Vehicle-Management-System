@@ -70,7 +70,7 @@ function AutomobileForm({fetchAutomobiles}) {
                 <div className ="offset-3 col-6">
                     <div className="shadow p-4 mt-4">
                         <div>
-                            <h1>Add an Automobile to Inventory</h1>
+                            <h1 className="py-4">Add an Automobile to Inventory</h1>
                             <form onSubmit={handleSubmit}>
 
                                     <div className="mb-3">

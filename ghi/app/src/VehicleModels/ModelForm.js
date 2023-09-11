@@ -63,7 +63,7 @@ function ModelForm() {
         <div className="row">
             <div className="offset-3 col-6">
                 <div className="shadow p-4 mt-4">
-                    <h1 className="py-4">Create a vehicle Model</h1>
+                    <h1 className="py-4">Create a vehicle model</h1>
                     <form onSubmit={handleSubmit}>
 
                         <div className="mb-3">
