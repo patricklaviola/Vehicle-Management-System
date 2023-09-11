@@ -21,12 +21,12 @@ import SalesList from './Sale/SalesList';
 import SaleForm from './Sale/SaleForm';
 import SalespersonHistory from './Salesperson/SalespersonHistory';
 
-// import TechniciansList from './Technician/TechniciansList';
-// import TechnicianForm from './Technician/TechnicianForm';
+import TechniciansList from './Technician/TechniciansList';
+import TechnicianForm from './Technician/TechnicianForm';
 
-// import AppointmentsList from './Appointment/AppointmentsList';
-// import AppointmentsForm from './Appointment/AppointmentForm';
-// import ServiceHistory from './Appointment/ServiceHistory';
+import AppointmentsList from './Appointment/AppointmentsList';
+import AppointmentsForm from './Appointment/AppointmentForm';
+import ServiceHistory from './Appointment/ServiceHistory';
 
 
 function App() {
@@ -57,12 +57,12 @@ function App() {
           <Route path="/sales/new" element={<SaleForm />} />
           <Route path="/sales/history" element={<SalespersonHistory />} />
           
-          {/* <Route path="/technicians" element={<TechniciansList />} /> */}
-          {/* <Route path="/technicians/new" element={<TechnicianForm />} /> */}
+          <Route path="/technicians" element={<TechniciansList />} />
+          <Route path="/technicians/new" element={<TechnicianForm />} />
 
-          {/* <Route path="/appointments" element={<AppointmentsList />} /> */}
-          {/* <Route path="/appointments/new" element={<AppointmentsForm />} /> */}
-          {/* <Route path="/appointments/history" element={<ServiceHistory />} /> */}
+          <Route path="/appointments" element={<AppointmentsList />} />
+          <Route path="/appointments/new" element={<AppointmentsForm />} />
+          <Route path="/appointments/history" element={<ServiceHistory />} />
 
         </Routes>
       </div>
