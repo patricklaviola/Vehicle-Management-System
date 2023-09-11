@@ -3,10 +3,10 @@ import MainPage from './MainPage';
 import Nav from './Nav';
 
 import ManufacturersList from './Manufacturer/ManufacturersList';
-// import ManufacturerForm from './Manufacturer/ManufacturerForm';
+import ManufacturerForm from './Manufacturer/ManufacturerForm';
 
 import ModelsList from './VehicleModels/ModelsList';
-// import ModelForm from './VehicleModels/ModelForm';
+import ModelForm from './VehicleModels/ModelForm';
 
 import AutomobilesList from './Automobile/AutomobilesList';
 import AutomobileForm from './Automobile/AutomobileForm';
@@ -39,10 +39,10 @@ function App() {
           <Route path="/" element={<MainPage />} />
 
           <Route path="/manufacturers" element={<ManufacturersList />} />
-          {/* <Route path="/manufacturers/new" element={<ManufacturerForm />} /> */}
+          <Route path="/manufacturers/new" element={<ManufacturerForm />} />
 
           <Route path="/models" element={<ModelsList />} />
-          {/* <Route path="/models/new" element={<ModelForm />} /> */}
+          <Route path="/models/new" element={<ModelForm />} />
     
           <Route path="/automobiles" element={<AutomobilesList />} />
           <Route path="/automobiles/new" element={<AutomobileForm />} />
