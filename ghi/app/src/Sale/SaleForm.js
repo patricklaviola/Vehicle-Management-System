@@ -56,7 +56,7 @@ function SaleForm () {
         const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
-            setCustomers(data.customer);
+            setCustomers(data.customers);
         }
     };
 
