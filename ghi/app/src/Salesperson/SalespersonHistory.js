@@ -54,7 +54,7 @@ function SalespersonHistory() {
                     </select>
                 </div>
                 <div>
-                    <table className="table table-success table-striped">
+                    <table className="table table-striped">
                         <thead>
                             <tr>
                                 <th>Salesperson</th>
