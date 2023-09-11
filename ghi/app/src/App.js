@@ -9,7 +9,7 @@ import ModelsList from './VehicleModels/ModelsList';
 // import ModelForm from './VehicleModels/ModelForm';
 
 import AutomobilesList from './Automobile/AutomobilesList';
-// import AutomobileForm from './Automobile/AutomobileForm';
+import AutomobileForm from './Automobile/AutomobileForm';
 
 import SalespeopleList from './Salesperson/SalespeopleList';
 import SalespersonForm from './Salesperson/SalespersonForm';
@@ -45,7 +45,7 @@ function App() {
           {/* <Route path="/models/new" element={<ModelForm />} /> */}
     
           <Route path="/automobiles" element={<AutomobilesList />} />
-          {/* <Route path="/automobiles/new" element={<AutomobileForm />} /> */}
+          <Route path="/automobiles/new" element={<AutomobileForm />} />
 
           <Route path="/salespeople" element={<SalespeopleList />} />
           <Route path="/salespeople/new" element={<SalespersonForm />} />
