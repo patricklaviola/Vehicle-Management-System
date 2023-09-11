@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function ModelForm({fetchModels}) {
+function ModelForm() {
     const [name, setName] = useState("");
     const [picture_url, setPictureUrl] = useState("");
     const [manufacturer, setManufacturer] = useState("");
@@ -53,7 +53,7 @@ function ModelForm({fetchModels}) {
 
         const modelResponse = await fetch(modelsUrl, modelsFetchConfig);
         if (modelResponse.ok) {
-            fetchModels();
+            // fetchModels();
             setName('');
             setPictureUrl('');
             setManufacturer('');
@@ -63,16 +63,17 @@ function ModelForm({fetchModels}) {
         <div className="row">
             <div className="offset-3 col-6">
                 <div className="shadow p-4 mt-4">
-                    <h1>Create a Vehicle Model</h1>
+                    <h1 className="py-4">Create a vehicle Model</h1>
                     <form onSubmit={handleSubmit}>
-                    <label htmlFor="model_name">Model name...</label>
+
                         <div className="mb-3">
                             <input className="form-control" type="text" placeholder="Model name..." required name="name" id="name" value={name} onChange={handleNameChange} />
                         </div>
-                    <label htmlFor="picture">Picture URL...</label>
+
                         <div className="mb-3">
                             <input className="form-control" type="text" placeholder="Picture URL..." required name="picture" id="picture" value={picture_url} onChange={handlePictureChange} />
                         </div>
+
                         <div className="mb-3">
                             <select className="form-select" required name="manfacturer" id="manufacturer" value={manufacturer} onChange={handleManufacturerChange} >
                                 <option value="">Choose an Manufacturer...</option>

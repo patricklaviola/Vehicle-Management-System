@@ -17,7 +17,7 @@ function AutomobilesList() {
 
     return (
         <>
-            <h1 className="list-heading" id="automobiles-heading">Automobiles</h1>
+            <h1 className="list-heading py-4" id="automobiles-heading">Automobiles</h1>
             <div>
                 <table className="table table-striped">
                     <thead>

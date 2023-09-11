@@ -17,7 +17,7 @@ function ModelsList() {
     
     return (
         <>
-            <h1 className="list-heading" id="models-heading">Models</h1>
+            <h1 className="list-heading py-4" id="models-heading">Models</h1>
             <div>
                 <table className="table table-striped">
                     <thead>

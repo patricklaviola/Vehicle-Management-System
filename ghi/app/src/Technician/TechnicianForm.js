@@ -49,7 +49,7 @@ function TechnicianForm () {
                     <div className="shadow p-4 mt-4">
                         <h1 className='py-2'>Add a Technician</h1>
                         <form onSubmit={handleSubmit} id="new-technician-form">
-                            <label htmlFor='first_name'></label>
+                            {/* <label htmlFor='first_name'></label> */}
                                 <div className="mb-3">
                                     <input className="form-control" type="text" placeholder="First Name..." required name="first_name" id="first_name" value={formData.first_name} onChange={handleFormChange}/>
                                 </div>
