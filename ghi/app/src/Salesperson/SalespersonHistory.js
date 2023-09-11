@@ -13,34 +13,44 @@ function SalespersonHistory() {
     const [salespeople, setSalespeople] = useState([]);
     const [salesperson, setSalesperson] = useState('');
 
+        const fetchSales = async () => {
+            const url = "http://localhost:8090/api/sales/";
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                setSales(data.sale);
+                console.log(data.sale)
+            }
+        };
+
+        useEffect(() => {
+            fetchSales();
+        }, []);
+        
+    const loadSalespeople = async () => {
+        const url = "http://localhost:8090/api/salespeople/";
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            setSalespeople(data.salespeople);
+        }
+    };
+
+    useEffect(() => {
+        loadSalespeople();
+    }, []);
+    
+
+
     const handleSalespersonChange = async (e) => {
         setSalesperson(e.target.value);
         const salespersonUrl = `http://localhost:8090/api/sales/history/${salesperson.salesperson.id}/`;
         const searchResponse = await fetch(salespersonUrl);
         if (searchResponse.ok) {
             const searchJsonData = await searchResponse.json();
-            setSales(searchJsonData.sales);
+            setSales(searchJsonData.sale);
         }
     };
-
-    const fetchSalespersonData = async () => {
-        // salesperson
-        const salespersonResponse = await fetch("http://localhost:8090/api/salespeople/");
-        if (salespersonResponse.ok) {
-            const salespersonJsonData = await salespersonResponse.json();
-            setSalespeople(salespersonJsonData.salespeople);
-        }
-        // sales
-        const salesResponse = await fetch("http://localhost:8090/api/sales/");
-        if (salesResponse.ok) {
-            const salesJsonData = await salesResponse.json();
-            setSales(salesJsonData.sales);
-        }
-    };
-
-    useEffect(() => {
-        fetchSalespersonData();
-    }, []);
 
     return (
         <>
