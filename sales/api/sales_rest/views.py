@@ -272,7 +272,7 @@ def api_sales(request):
 
         sale = Sale.objects.create(**content)
         sale.save()
-        # sale.automobile.sell()
+        sale.automobile.sell()
 
         response = {
             "message": "Sale created successfully",

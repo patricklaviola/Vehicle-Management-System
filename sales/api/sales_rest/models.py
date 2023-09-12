@@ -37,10 +37,10 @@ class AutomobileVO(models.Model):
     def get_api_url(self):
         return reverse("api_automobile", kwargs={"id": self.id})
 
-    # # Report a sale: this marks the vehicle as sold and saves the model
-    # def sell(self):
-    #     self.sold = True
-    #     self.save()
+    # Report a sale: this marks the vehicle as sold and saves the model
+    def sell(self):
+        self.sold = True
+        self.save()
 
 
 class Sale(models.Model):
