@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 
-function AutomobileForm({fetchAutomobiles}) {
+function AutomobileForm() {
     const [color, setColor] = useState('');
     const [year, setYear] = useState('');
     const [vin, setVin] = useState('');
@@ -56,7 +56,6 @@ function AutomobileForm({fetchAutomobiles}) {
         const automobileResponse = await fetch(automobileUrl, automobileFetchConfig);
         
         if (automobileResponse.ok) {
-            fetchAutomobiles();
             setColor('');
             setYear('');
             setVin('');
