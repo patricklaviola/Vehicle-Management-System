@@ -72,6 +72,8 @@ function SaleForm () {
         fetchCustomers();
     }, []);
 
+    const unsoldAutos = autos.filter(auto => !auto.sold);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newSaleData = {
@@ -108,7 +110,7 @@ function SaleForm () {
                                 <div className="mb-3">                                 
                                     <select className="form-select" required name="auto" id="auto" value={auto} onChange={handleAutoChange}>
                                         <option value="">Choose an automobile VIN...</option>
-                                        {autos.map(auto => {
+                                        {unsoldAutos.map(auto => {
                                             return(
                                                 <option key={auto.vin} value={auto.vin}>
                                                     {auto.vin}
