@@ -9,7 +9,7 @@ function SalesList() {
             const response = await fetch("http://localhost:8090/api/sales/");
             if (response.ok) {
                 const data = await response.json();
-                setSales(data.sale);
+                setSales(data.sales);
             }
         }
 
