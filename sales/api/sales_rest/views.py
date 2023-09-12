@@ -260,8 +260,8 @@ def api_sales(request):
             return response
         # Customer
         try:
-            customer = Customer.objects.get(first_name=content["customer"])
-            # customer = Customer.objects.get(id=content["customer"])
+            # customer = Customer.objects.get(first_name=content["customer"])
+            customer = Customer.objects.get(id=content["customer"])
             content['customer'] = customer
         except ValueError as e:
             response = JsonResponse(
