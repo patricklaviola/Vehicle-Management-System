@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SalespersonForm () {
+    const navigate = useNavigate();
     const [first_name, setFirstName] = useState('');
     const [last_name, setLastName] = useState('');
     const [employee_id, setEmployeeId] = useState('');
@@ -37,6 +39,7 @@ function SalespersonForm () {
             setFirstName('');
             setLastName('');
             setEmployeeId('');
+            navigate("/salespeople")
         };
     };
     

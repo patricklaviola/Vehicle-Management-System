@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function ManufacturerForm () {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
     })
@@ -25,6 +27,7 @@ function ManufacturerForm () {
             setFormData({
                 name: '',
             });
+            navigate("/manufacturers")
         }
     }
     

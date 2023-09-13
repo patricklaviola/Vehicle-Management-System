@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function ModelForm() {
+    const navigate = useNavigate();
     const [name, setName] = useState("");
     const [picture_url, setPictureUrl] = useState("");
     const [manufacturer, setManufacturer] = useState("");
     const [manufacturers, setManufacturers] = useState([]);
+    const [models, setModels] = useState([]);
 
     const handleNameChange = (e) => {
         const value = e.target.value;
@@ -29,8 +32,17 @@ function ModelForm() {
         }
     };
 
+    const fetchModels = async () => {
+        const modelResponse = await fetch("http://localhost:8100/api/models/");
+        if (modelResponse.ok) {
+            const modelJsonData = await modelResponse.json();
+            setModels(modelJsonData.models);
+        }
+    };
+
     useEffect(() => {
         fetchManufacturers();
+        fetchModels();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -53,10 +65,10 @@ function ModelForm() {
 
         const modelResponse = await fetch(modelsUrl, modelsFetchConfig);
         if (modelResponse.ok) {
-            // fetchModels();
             setName('');
             setPictureUrl('');
             setManufacturer('');
+            navigate("/models")
         }
     };
     return (
@@ -71,12 +83,12 @@ function ModelForm() {
                         </div>
 
                         <div className="mb-3">
-                            <input className="form-control" type="text" placeholder="Picture URL..." required name="picture" id="picture" value={picture_url} onChange={handlePictureChange} />
+                            <input className="form-control" type="url" placeholder="Picture URL..." required name="picture" id="picture" value={picture_url} onChange={handlePictureChange} />
                         </div>
 
                         <div className="mb-3">
                             <select className="form-select" required name="manfacturer" id="manufacturer" value={manufacturer} onChange={handleManufacturerChange} >
-                                <option value="">Choose an Manufacturer...</option>
+                                <option value="manufacturers">Choose an Manufacturer...</option>
                                 {manufacturers.map((manufacturer) => {
                                     return (
                                         <option key={manufacturer.id} value={manufacturer.id}>

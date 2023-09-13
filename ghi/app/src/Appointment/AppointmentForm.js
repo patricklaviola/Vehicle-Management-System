@@ -1,6 +1,8 @@
 import React, { useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function AppointmentForm () {
+    const navigate = useNavigate();
     const [technicians, setTechnicians] = useState([])
     const [formData, setFormData] = useState({
         date: '',
@@ -62,6 +64,7 @@ function AppointmentForm () {
                 customer: '',
                 technician: '',
             });
+            navigate("/appointments")
         }
     }
     
