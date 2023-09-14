@@ -39,6 +39,35 @@ export default function Nav() {
 										"rgba(255, 255, 255, 0.55)";
 								}}
               >
+                Games
+              </button>
+              <ul className = "dropdown-menu">
+                <li className="dropdown-item">
+                  <NavLink className="nav-link" aria-current="page" to="/tic-tac-toe/" style={{ color: "black" }}>Tic-tac-toe</NavLink>
+                </li>
+              </ul>
+            </li>
+
+            <li className="nav-item dropdown">
+              <button 
+                className="nav-link dropdown-toggle" 
+                id="navbarDropdown" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false"
+								style={{
+									backgroundColor: "transparent",
+									border: "none",
+									color: "rgba(255,255,255,.55)",
+									transition: "color 0.2s",
+								}}
+								onMouseEnter={(e) => {
+									e.target.style.color = "white";
+								}}
+								onMouseLeave={(e) => {
+									e.target.style.color =
+										"rgba(255, 255, 255, 0.55)";
+								}}
+              >
                 Manufacturers
               </button>
               <ul className = "dropdown-menu">
