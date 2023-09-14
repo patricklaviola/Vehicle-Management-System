@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function TechnicianForm () {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -29,6 +31,7 @@ function TechnicianForm () {
                 last_name: '',
                 employee_id: '',
             });
+            navigate("/technicians")
         }
     }
     

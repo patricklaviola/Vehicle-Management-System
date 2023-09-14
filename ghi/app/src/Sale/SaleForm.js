@@ -1,26 +1,19 @@
-// Create a new instance of Sale in Sales!
-// Create link 'Record a new sale' in navbar
 
-/*
-SPECIAL FEATURE 1: Unsold Only
-- All automobiles available for sale must come from inventory and be unsold.
-- Requires that already sold automobiles can be detected after a sale. 
-- A sold field is available within the Automobile inventory model.
-*/
 import React, { useEffect, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 
 function SaleForm () {
+    const navigate = useNavigate();
     const [autos, setAutos] = useState([]);
-    const [auto, setAuto] = useState('');
+    const [automobile, setAutomobile] = useState('');
     const [salespeople, setSalespeople] = useState([]);
     const [salesperson, setSalesperson] = useState('');
     const [customers, setCustomers] = useState([]);
     const [customer, setCustomer] = useState('');
     const [price, setPrice] = useState('');
 
-    const handleAutoChange = (e) => {
-        setAuto(e.target.value);
+    const handleAutomobileChange = (e) => {
+        setAutomobile(e.target.value);
     };
     const handleSalespersonChange = (e) => {
         setSalesperson(e.target.value);
@@ -38,13 +31,13 @@ function SaleForm () {
         const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
+            const unsoldAutomobiles = data.autos.filter(
+                (sales) => sales.sold === false
+            );
+            setAutos(unsoldAutomobiles);
             setAutos(data.autos);
         }
     };
-
-    useEffect(() => {
-        fetchAutos();
-    }, []);
 
     const fetchSalespeople = async () => {
         const url = "http://localhost:8090/api/salespeople/";
@@ -54,10 +47,6 @@ function SaleForm () {
             setSalespeople(data.salespeople);
         }
     };
-
-    useEffect(() => {
-        fetchSalespeople();
-    }, []);
 
     const fetchCustomers = async () => {
         const url = "http://localhost:8090/api/customers/";
@@ -69,31 +58,54 @@ function SaleForm () {
     };
 
     useEffect(() => {
+        fetchAutos();
+        fetchSalespeople();
         fetchCustomers();
     }, []);
 
     const unsoldAutos = autos.filter(auto => !auto.sold);
 
+    const updateAuto = async (vin) => {
+        try {
+            const updateAutoUrl = `http://localhost:8100/api/automobiles/${vin}/`;
+            const updateAutoData = {sold: true};
+            const updateAutoFetchConfig = {
+                method: "PUT",
+                body: JSON.stringify(updateAutoData),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+            const updateAutoResponse = await fetch(updateAutoUrl, updateAutoFetchConfig)
+            if (updateAutoResponse.ok) {
+                fetchAutos();
+                navigate('/sales/');
+            }
+        } catch (error) {
+            console.log('error updating auto')
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newSaleData = {
-            automobile: auto,
+            automobile: automobile,
             salesperson: salesperson,
             customer: customer,
             price: price
         };
-
+        // get sales
         const saleUrl = "http://localhost:8090/api/sales/";
-        const fetchConfig = {
+        const saleFetchConfig = {
             method: "POST",
             body: JSON.stringify(newSaleData),
             headers: {
                 'Content-Type': 'application/json',
             },
         };
-        const response = await fetch(saleUrl, fetchConfig);
+        const response = await fetch(saleUrl, saleFetchConfig);
         if (response.ok) {
-            setAuto('');
+            setAutomobile('');
             setSalesperson('');
             setCustomer('');
             setPrice('');
@@ -108,7 +120,7 @@ function SaleForm () {
                         <form onSubmit={handleSubmit} id="new-sale-form">
                             <label htmlFor='auto'>Automobile VIN</label>
                                 <div className="mb-3">                                 
-                                    <select className="form-select" required name="auto" id="auto" value={auto} onChange={handleAutoChange}>
+                                    <select className="form-select" required name="auto" id="auto" value={automobile} onChange={handleAutomobileChange}>
                                         <option value="">Choose an automobile VIN...</option>
                                         {unsoldAutos.map(auto => {
                                             return(
@@ -149,7 +161,7 @@ function SaleForm () {
                                 <div className="mb-3">
                                     <input className="form-control" type="number" placeholder="$$$" required name="price" id="price" value={price} onChange={handlePriceChange}/>
                                 </div>
-                            <button type="submit" className="btn btn-primary">Submit</button>
+                            <button type="submit" className="btn btn-primary" onClick={() => updateAuto(automobile)}>Submit</button>
                         </form>
                     </div>
                 </div>

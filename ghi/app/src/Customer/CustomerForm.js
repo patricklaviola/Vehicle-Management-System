@@ -2,9 +2,11 @@
 // Create 'Add Customer' link in navbar!
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function CustomerForm () {
     // Define state variables using useState hook to manage the following:
+    const navigate = useNavigate();
     const [first_name, setFirstName] = useState([]);
     const [last_name, setLastName] = useState([]);
     const [address, setAddress] = useState([]);
@@ -57,6 +59,7 @@ function CustomerForm () {
             setLastName('');
             setAddress('');
             setPhoneNumber('');
+            navigate("/customers");
         };
     };
 
@@ -82,7 +85,8 @@ function CustomerForm () {
                                 </div>
                             <label htmlFor='phone_number'>Phone Number</label>
                                 <div className="mb-3">
-                                    <input className="form-control" type="text" placeholder="Phone Number..." required name="phone_number" id="phone_number" value={phone_number} onChange={handlePhoneNumberChange}/>
+                                    {/* May need to switch type="text" */}
+                                    <input className="form-control" type="tel" placeholder="Phone Number..." required name="phone_number" id="phone_number" value={phone_number} onChange={handlePhoneNumberChange}/>
                                 </div>
                             <button type="submit" className="btn btn-primary">Submit</button>
                         </form>

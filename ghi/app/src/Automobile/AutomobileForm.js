@@ -1,9 +1,10 @@
 // Create a new instance of Automobile in Inventory!
 // Create 'Create an Automobile' link in navbar!
 import { useEffect, useState } from "react";
-
+import { useNavigate } from 'react-router-dom';
 
 function AutomobileForm() {
+    const navigate = useNavigate();
     const [color, setColor] = useState('');
     const [year, setYear] = useState('');
     const [vin, setVin] = useState('');
@@ -60,6 +61,7 @@ function AutomobileForm() {
             setYear('');
             setVin('');
             setModel('');
+            navigate("/automobiles")
         }
     };
 
