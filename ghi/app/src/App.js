@@ -27,6 +27,7 @@ import TechnicianForm from './Technician/TechnicianForm';
 import AppointmentsList from './Appointment/AppointmentsList';
 import AppointmentsForm from './Appointment/AppointmentForm';
 import ServiceHistory from './Appointment/ServiceHistory';
+import Board from './Games/tic-tac-toe';
 
 
 function App() {
@@ -37,6 +38,8 @@ function App() {
         <Routes>
 
           <Route path="/" element={<MainPage />} />
+
+          <Route path="/tic-tac-toe" element={<Board />} />
 
           <Route path="/manufacturers" element={<ManufacturersList />} />
           <Route path="/manufacturers/new" element={<ManufacturerForm />} />
